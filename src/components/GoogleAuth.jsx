@@ -1,0 +1,90 @@
+import { useState, useEffect } from "react";
+
+import axios from "axios";
+
+const clientId = `572714626065-ktghm0bmuq7ia3rumm96mot2t342a3od.apps.googleusercontent.com`;
+const client_secret = `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`;
+const redirectUri = "http://localhost:3000/";
+const scope = `https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events`;
+const responseType = "code";
+const apiKey = "AIzaSyBlfLWeA1ClUTfcvDLAux8nA56GB6JwTEk";
+
+export function AuthenticateWithGoogle() {
+  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${encodeURIComponent(
+    scope
+  )}&access_type=offline`;
+
+  window.location.href = authUrl;
+}
+
+export const exchangeCodeForToken = async (code) => {
+  try {
+    const response = await axios.post("https://oauth2.googleapis.com/token", {
+      code,
+      client_id: clientId,
+      client_secret: client_secret,
+      redirect_uri: "http://localhost:3000/",
+      grant_type: "authorization_code",
+    });
+
+    return response.data.access_token;
+
+    // Handle the access token (e.g., save to state, localStorage, etc.)
+  } catch (error) {
+    console.error("Error exchanging code for token:", error);
+  }
+};
+
+export const fetchEvents = async (token) => {
+  try {
+    const response = await axios.get(
+      "https://www.googleapis.com/calendar/v3/calendars/primary/events/",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Events fetched:", response.data);
+    return response.data.items;
+  } catch (error) {
+    console.error("Error fetching calendar events:", error);
+  }
+};
+
+export default function GoogleAuth() {
+  const [userInfo, setUserInfo] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [accessToken, setAccessToken] = useState(null);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    console.log(code);
+
+    if (code) {
+      exchangeCodeForToken(code);
+
+      console.log(code);
+    }
+  }, []);
+}
+
+export const createEvents = async (token, body) => {
+  try {
+    console.log(token, "toke");
+    const response = await axios.post(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("data", response.data);
+  } catch (error) {
+    console.error("error", error);
+  }
+};
