@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 
 import axios from "axios";
 
-const clientId = `572714626065-ktghm0bmuq7ia3rumm96mot2t342a3od.apps.googleusercontent.com`;
-const client_secret = `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`;
-const redirectUri = "http://localhost:3000/";
-const scope = `https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events`;
-const responseType = "code";
-const apiKey = "AIzaSyBlfLWeA1ClUTfcvDLAux8nA56GB6JwTEk";
+const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
+const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+const scope = process.env.REACT_APP_SCOPE;
+const responseType = process.env.REACT_APP_RESPONSE_TYPE;
+const apiKey = process.env.REACT_APP_API_KEY;
 
 export function AuthenticateWithGoogle() {
-  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${encodeURIComponent(
+  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${encodeURIComponent(
     scope
   )}&access_type=offline`;
 
@@ -22,7 +22,7 @@ export const exchangeCodeForToken = async (code) => {
     const response = await axios.post("https://oauth2.googleapis.com/token", {
       code,
       client_id: clientId,
-      client_secret: client_secret,
+      client_secret: clientSecret,
       redirect_uri: "http://localhost:3000/",
       grant_type: "authorization_code",
     });
@@ -59,6 +59,8 @@ export default function GoogleAuth() {
   const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
+    console.log("Client ID: ", process.env.REACT_APP_CLIENT_ID);
+    console.log("Client Secret: ", process.env.REACT_APP_CLIENT_SECRET);
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
     console.log(code);

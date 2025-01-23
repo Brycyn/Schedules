@@ -21,6 +21,13 @@ import { useNavigate } from "react-router-dom";
 
 import Wage from "./Wage";
 
+const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
+const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+const scope = process.env.REACT_APP_SCOPE;
+const responseType = process.env.REACT_APP_RESPONSE_TYPE;
+const apiKey = process.env.REACT_APP_API_KEY;
+
 const Menu = ({ events }) => {
   const [menuStatus, setMenuStatus] = useState(false);
   const navigation = useNavigate();
@@ -36,6 +43,9 @@ const Menu = ({ events }) => {
     navigation(`/wage?events=${eventString}`);
   }
   function toggleMenu() {
+    console.log("Client IDs: ", clientId);
+    console.log("Client Secret: ", process.env.REACT_APP_CLIENT_SECRET);
+
     return setMenuStatus(!menuStatus);
   }
   return (
