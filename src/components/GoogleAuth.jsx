@@ -10,7 +10,7 @@ const responseType = process.env.REACT_APP_RESPONSE_TYPE;
 const apiKey = process.env.REACT_APP_API_KEY;
 
 export function AuthenticateWithGoogle() {
-  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${encodeURIComponent(
+  const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${encodeURIComponent(
     scope
   )}&access_type=offline`;
 

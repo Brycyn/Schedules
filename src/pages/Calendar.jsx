@@ -225,7 +225,15 @@ export default function CalendarEvents() {
             </>
           )}
         </div>
-        <div style={{ height: 100, width: "100%", transform: "scale( 0.8)" }}>
+        <div
+          style={{
+            height: 100,
+            width: "100%",
+            transform: "scale( 0.8)",
+            borderWidth: 1,
+            borderColor: "black",
+          }}
+        >
           <FullCalendar
             plugins={[timeGridPlugin]}
             initialView="timeGridWeek"
@@ -238,6 +246,7 @@ export default function CalendarEvents() {
             weekends={false}
             events={calendarEvents}
             allDaySlot={false}
+            style={{ borderWidth: 1, borderColor: "black" }}
           />
         </div>
 

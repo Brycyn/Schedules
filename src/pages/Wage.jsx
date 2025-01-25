@@ -49,39 +49,71 @@ export default function Wage() {
     });
   }
   return (
-    <div
-      style={{
-        alignSelf: "center",
-        flexDirection: "column",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <button onClick={handleWageCalculation}> calculate</button>
-      {parsedEvents.map((event, index) => {
-        return (
-          <>
+    <>
+      <div
+        style={{
+          flexDirection: "row",
+          display: "flex",
+          overflowX: "scroll", // "auto" instead of "scroll" to show only when needed
+          height: "100%",
+        }}
+      >
+        {parsedEvents.map((event, index) => {
+          return (
             <div
               style={{
-                textAlign: "center",
                 border: "1px solid black",
-                alignSelf: "center",
-                width: 200,
-                height: 200,
+                width: "100%",
+                height: " 100%",
+                borderRadius: 40,
+                overflow: "hidden",
+                margin: 5,
+                padding: 50,
+                position: "relative", // Make this relative to position the checkbox
+                justifyContent: "center",
               }}
               key={index}
             >
-              <h3> {event.title}</h3>
-              <p>{event.start.split("T")[1]}</p>
-              <p>{event.end.split("T")[1]}</p>
+              <input
+                style={{
+                  position: "absolute",
+                  top: 10, // Adjust the top positioning
+                  left: 10, // Adjust the right positioning
+                }}
+                type="checkbox"
+                onClick={() => {
+                  console.log(event.title);
+                }}
+              />
+              <div
+                class="details"
+                style={{
+                  display: "flex", // Flexbox layout
+                  flexDirection: "column", // Stack children vertically
+                  justifyContent: "center", // Center content horizontally
+                  alignItems: "center", // Center content vertically
+                  height: 50, // Ensure it takes full height of the parent
+                  textAlign: "center", // Center-align text
+                  fontSize: 12,
+                  borderWidth: 1,
+                  borderColor: "black",
+                }}
+              >
+                <h4>{event.title}</h4>
+                <p>{event.start.split("T")[1]}</p>
+                <p>{event.end.split("T")[1]}</p>
+              </div>
             </div>
-          </>
-        );
-      })}
+          );
+        })}
+      </div>
+
+      <button onClick={handleWageCalculation}> calculate</button>
+
       <h4>
         {totalHours} Hours and {totalMinutes} minutes
       </h4>
       <h5>wage: {totalHours * 23}</h5>
-    </div>
+    </>
   );
 }
