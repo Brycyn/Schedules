@@ -28,7 +28,7 @@ const scope = process.env.REACT_APP_SCOPE;
 const responseType = process.env.REACT_APP_RESPONSE_TYPE;
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const Menu = ({ events }) => {
+export const Menu = ({ events }) => {
   const [menuStatus, setMenuStatus] = useState(false);
   const navigation = useNavigate();
 
@@ -80,16 +80,16 @@ const Menu = ({ events }) => {
           }}
         >
           <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/">Messages</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/">Schedule</NavLink>
+            <NavLink to="/calendar">Schedule</NavLink>
           </li>
           <li style={{ paddingBottom: "25px" }}>
             <NavLink to="/">Contacts</NavLink>
           </li>
-          <li style={{ paddingBottom: "25px" }}>
-            <p onClick={navigateToWage}>Wage Calulator</p>
+          <li style={{ paddingBottom: "25px" }} onClick={navigateToWage}>
+            Wage Calulator
           </li>
         </ul>
       </div>
