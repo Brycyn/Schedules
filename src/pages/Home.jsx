@@ -1,5 +1,6 @@
 import React from "react";
 import { Menu } from "./Calendar";
+import FourOhFour from "../images/FourOhFour.png";
 
 export const Banner = () => {
   return (
@@ -20,6 +21,7 @@ export const Banner = () => {
           display: "flex",
           justifyContent: "center",
           textAlign: "center",
+          marginRight: 34,
         }}
         class="banner-text"
       >
@@ -28,11 +30,33 @@ export const Banner = () => {
     </div>
   );
 };
+
+export const CenteredImage = () => {
+  return (
+    <div
+      style={{
+        display: "grid",
+        placeItems: "center", // Centers both horizontally and vertically
+        height: 400, // Full height viewport
+      }}
+    >
+      <img
+        src={FourOhFour}
+        alt="under construction"
+        style={{ maxWidth: "100%", maxHeight: "100%" }} // Optional scaling
+      />
+    </div>
+  );
+};
+
 export default function Home() {
   return (
     <>
       <Banner />
-      <p>Home</p>
+      <p style={{ textAlign: "center" }}>Home</p>
+      <div>
+        <CenteredImage />
+      </div>
     </>
   );
 }
