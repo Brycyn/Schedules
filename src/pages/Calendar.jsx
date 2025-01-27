@@ -217,11 +217,14 @@ export default function CalendarEvents() {
               center: "title",
               right: "timeGridWeek,timeGridDay",
             }}
-            timeZone="PST"
-            weekends={false}
+            weekends={true}
             events={calendarEvents}
             allDaySlot={false}
-            style={{ borderWidth: 1, borderColor: "black" }}
+            slotMinTime={"06:00:00"}
+            nowIndicator={true}
+            slotMaxTime={"23:00:00"}
+            timeZone="local"
+            expandRows={true}
           />
         </div>
 
