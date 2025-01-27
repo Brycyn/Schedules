@@ -23,7 +23,7 @@ export const exchangeCodeForToken = async (code) => {
       code,
       client_id: clientId,
       client_secret: clientSecret,
-      redirect_uri: "http://localhost:3000/",
+      redirect_uri: redirectUri,
       grant_type: "authorization_code",
     });
 
