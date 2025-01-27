@@ -118,39 +118,13 @@ export default function CalendarEvents() {
           setAccessToken(token);
           const events = await fetchEvents(token);
           const newCalendarEvents = events?.map((item) => {
-            var startDate = new Date(item.start.dateTime).toLocaleString();
-            var endDate = new Date(item.end.dateTime).toLocaleString();
+            var startDate = new Date(item.start.dateTime);
+            var endDate = new Date(item.end.dateTime);
 
-            const [dateStart, timeStart] = startDate.split(",");
-            const [dateEnd, timeEnd] = endDate.split(",");
-            const [sMonth, sDay, sYear] = dateStart.split("/");
-            const [eMonth, eDay, eYear] = dateEnd.split("/");
-
-            // const parseTime = (time) => {
-            //   const [timePart, modifier] = time.trim().split(" ");
-            //   let [hours, minutes] = timePart.split(":");
-            //   [hours, minutes] = [hours, minutes].map(Number);
-            //   console.log(hours, minutes);
-
-            //   if (modifier === "PM" && hours < 12) hours += 12;
-            //   if (modifier === "AM" && hours === 12) hours = 0;
-
-            //   console.log(hours, minutes);
-
-            //   return [hours, minutes];
-            // };
-
-            // const [sHour, sMin] = parseTime(timeStart);
-            // const [eHour, eMin] = parseTime(timeEnd);
-            //test
             return {
               title: item.summary,
-              start: item.start.dateTime
-                ? new Date(sYear, sMonth - 1, sDay)
-                : new Date(item.start.date).toLocaleString(),
-              end: item.end.dateTime
-                ? new Date(eYear, eMonth - 1, eDay)
-                : new Date(item.end.date).toLocaleString(),
+              start: startDate,
+              end: endDate,
             };
           });
 
@@ -166,6 +140,7 @@ export default function CalendarEvents() {
   useEffect(() => {
     // Log calendar events when they are updated
     console.log("Updated Calendar Events:", calendarEvents);
+    console.log("helper");
   }, [calendarEvents]);
 
   const insertEvent = async (body) => {
@@ -242,7 +217,7 @@ export default function CalendarEvents() {
               center: "title",
               right: "timeGridWeek,timeGridDay",
             }}
-            timeZone="America/Los_Angeles"
+            timeZone="PST"
             weekends={false}
             events={calendarEvents}
             allDaySlot={false}
@@ -283,7 +258,10 @@ export default function CalendarEvents() {
               Add Event{" "}
               <button
                 title="close modal"
-                onClick={() => setModalOpen(false)}
+                onClick={() => {
+                  console.log("hello");
+                  return setModalOpen(false);
+                }}
                 style={{ justifyContent: "flex-end" }}
               >
                 X
