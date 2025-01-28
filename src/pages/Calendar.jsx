@@ -2,6 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import "../App.css";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
 import ReactModal from "react-modal";
 import { useState, useEffect } from "react";
@@ -24,11 +25,6 @@ import { useNavigate } from "react-router-dom";
 import Wage from "./Wage";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
-const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
-const redirectUri = process.env.REACT_APP_REDIRECT_URI;
-const scope = process.env.REACT_APP_SCOPE;
-const responseType = process.env.REACT_APP_RESPONSE_TYPE;
-const apiKey = process.env.REACT_APP_API_KEY;
 
 export const Menu = ({ events }) => {
   const [menuStatus, setMenuStatus] = useState(false);
@@ -116,6 +112,7 @@ export default function CalendarEvents() {
   const [modalOpen, setModalOpen] = useState(false);
   const [closeModal, setModalClosed] = useState(!modalOpen);
   const [eventSummary, setEventSummary] = useState("");
+
   useEffect(() => {
     const fetchGoogleEvents = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -213,7 +210,7 @@ export default function CalendarEvents() {
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
             <FullCalendar
-              plugins={[timeGridPlugin, dayGridPlugin]}
+              plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               headerToolbar={{
                 left: "prev,next",
@@ -233,6 +230,13 @@ export default function CalendarEvents() {
               slotMaxTime={"23:00:00"}
               timeZone="local"
               expandRows={true}
+              eventClick={(e) => {
+                const title = e.event.title;
+                const start = e.event.start.toLocaleTimeString();
+                const end = e.event.end.toLocaleTimeString();
+                const notice = `you have ${title} from ${start} to ${end} `;
+                alert(notice);
+              }}
             />
           </div>
           <button
@@ -247,6 +251,7 @@ export default function CalendarEvents() {
             Add Events
           </button>
         </div>
+
         <ReactModal
           isOpen={modalOpen}
           contentLabel="Add Event"
