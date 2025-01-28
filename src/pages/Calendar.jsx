@@ -1,6 +1,8 @@
 import FullCalendar from "@fullcalendar/react";
 import "../App.css";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import dayGridPlugin from "@fullcalendar/daygrid";
+
 import ReactModal from "react-modal";
 import { useState, useEffect } from "react";
 import {
@@ -91,6 +93,15 @@ export const Menu = ({ events }) => {
           <li style={{ paddingBottom: "25px" }} onClick={navigateToWage}>
             Wage Calulator
           </li>
+          <li>
+            <button
+              style={{ borderRadius: 50, overflow: "hidden" }}
+              onClick={AuthenticateWithGoogle}
+            >
+              {" "}
+              <FcGoogle /> Login With Google
+            </button>
+          </li>
         </ul>
       </div>
     </>
@@ -141,6 +152,7 @@ export default function CalendarEvents() {
     // Log calendar events when they are updated
     console.log("Updated Calendar Events:", calendarEvents);
     console.log("helper");
+    console.log("rn", new Date());
   }, [calendarEvents]);
 
   const insertEvent = async (body) => {
@@ -167,7 +179,7 @@ export default function CalendarEvents() {
   console.log("initial calendar events", calendarEvents);
   return (
     <>
-      <div className="App" style={{}}>
+      <div className="App" style={{ alignItems: "center", width: "100%" }}>
         <header
           style={{
             display: "flex",
@@ -176,20 +188,6 @@ export default function CalendarEvents() {
           }}
         >
           <Menu events={calendarEvents} />
-          <button
-            style={{ borderRadius: 50, overflow: "hidden" }}
-            onClick={() => setModalOpen(true)}
-          >
-            Add Events
-          </button>
-
-          <button
-            style={{ borderRadius: 50, overflow: "hidden" }}
-            onClick={AuthenticateWithGoogle}
-          >
-            {" "}
-            <FcGoogle /> Login With Google
-          </button>
         </header>
 
         <div>
@@ -202,32 +200,53 @@ export default function CalendarEvents() {
         </div>
         <div
           style={{
-            height: 100,
+            height: "100vh",
             width: "100%",
-            transform: "scale( 0.8)",
+            margin: "0 auto", // Horizontally centers the div
+
+            // transform: "scale( 0.8)",
             borderWidth: 1,
             borderColor: "black",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <FullCalendar
-            plugins={[timeGridPlugin]}
-            initialView="timeGridWeek"
-            headerToolbar={{
-              left: "prev,next",
-              center: "title",
-              right: "timeGridWeek,timeGridDay",
-            }}
-            weekends={true}
-            events={calendarEvents}
-            allDaySlot={false}
-            slotMinTime={"06:00:00"}
-            nowIndicator={true}
-            slotMaxTime={"23:00:00"}
-            timeZone="local"
-            expandRows={true}
-          />
-        </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <FullCalendar
+              plugins={[timeGridPlugin, dayGridPlugin]}
+              initialView="dayGridMonth"
+              headerToolbar={{
+                left: "prev,next",
+                center: "title",
+                right: "dayGridDay,dayGridWeek,dayGridMonth",
+              }}
+              dayHeaderFormat={{
+                weekday: "short",
 
+                omitCommas: true,
+              }}
+              weekends={true}
+              events={calendarEvents}
+              allDaySlot={false}
+              slotMinTime={"06:00:00"}
+              nowIndicator={true}
+              slotMaxTime={"23:00:00"}
+              timeZone="local"
+              expandRows={true}
+            />
+          </div>
+          <button
+            style={{
+              borderRadius: 50,
+              overflow: "hidden",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+            onClick={() => setModalOpen(true)}
+          >
+            Add Events
+          </button>
+        </div>
         <ReactModal
           isOpen={modalOpen}
           contentLabel="Add Event"
@@ -310,7 +329,14 @@ export default function CalendarEvents() {
             ></input>
           </div>
 
-          <div style={{ paddingTop: 10 }}>
+          <div
+            style={{
+              paddingTop: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+            }}
+          >
             <button
               title="close modal"
               onClick={() =>
