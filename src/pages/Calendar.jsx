@@ -22,8 +22,6 @@ import {
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
 
-import Wage from "./Wage";
-
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export const Menu = ({ events }) => {
@@ -31,15 +29,16 @@ export const Menu = ({ events }) => {
   const navigation = useNavigate();
 
   function navigateToWage() {
-    const eventString = encodeURIComponent(JSON.stringify(events));
+    const eventString = JSON.stringify(events);
 
     console.log(" prev events", JSON.stringify(events));
     console.log(" 1 events", JSON.stringify(events[5]));
 
     console.log(" new events", eventString);
 
-    navigation(`/wage?events=${eventString}`);
+    navigation(`/wage`, { state: { evnt: events } });
   }
+
   function toggleMenu() {
     console.log("Client IDs: ", clientId);
     console.log("Client Secret: ", process.env.REACT_APP_CLIENT_SECRET);

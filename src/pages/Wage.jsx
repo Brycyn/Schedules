@@ -1,45 +1,49 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+/**
+ *
+ * @param {*} events
+ * @returns calculations for amount of hours worked
+ */
 
 function WageCalc(events) {
   let startTime = events.start?.split("T")[1];
   let endTime = events.end?.split("T")[1];
   var [startHour, startMin] = startTime?.split(":").map(Number);
   var [endHour, endtMin] = endTime?.split(":").map(Number);
-
-  console.log(startHour, "hour", startMin);
-  console.log(endHour, "min", endtMin);
-
   var strtInMin = startHour * 60 + startMin;
   var endInMin = endHour * 60 + endtMin;
-
   if (endInMin < strtInMin) {
     endInMin += 24 * 60;
   }
   let totalMinutesWorked = Math.abs(strtInMin - endInMin);
-
-  console.log("tmw", totalMinutesWorked);
-
   let totalHoursWorked = Math.floor(totalMinutesWorked / 60);
   const workedMinutes = totalMinutesWorked % 60;
-
   const wageResult = { hours: totalHoursWorked, minutes: workedMinutes };
-
   return wageResult;
 }
-export default function Wage() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
 
-  const parameters = searchParams.get("events");
-  const parsedEvents = JSON.parse(decodeURIComponent(parameters));
-  console.log("parameters", parsedEvents);
+/**
+ *
+ * @returns wage page
+ */
+export default function Wage() {
+  const navigation = useNavigate();
+
+  const location = useLocation();
+
+  const eventsParam = location.state.evnt;
+
+  console.log("param", eventsParam);
+
   var [totalHours, setTotalHours] = useState(0);
   var [totalMinutes, setTotalMin] = useState(0);
 
   function handleWageCalculation() {
     let totalMinutesWorked = 0;
-    parsedEvents.forEach((shift) => {
+    eventsParam.forEach((shift) => {
       const { hours, minutes } = WageCalc(shift);
 
       totalMinutesWorked += hours * 60 + minutes;
@@ -50,25 +54,33 @@ export default function Wage() {
   }
   return (
     <>
+      <button onClick={() => navigation(-1)}>back</button>
       <div
+        className="detail-container"
         style={{
           flexDirection: "row",
           display: "flex",
-          overflowX: "scroll", // "auto" instead of "scroll" to show only when needed
+          flexWrap: "wrap",
+          // overflowX: "auto", // "auto" instead of "scroll" to show only when needed
           height: "100%",
+          width: "100%",
+
+          overflow: "scroll",
         }}
       >
-        {parsedEvents.map((event, index) => {
+        {eventsParam.map((event, index) => {
           return (
             <div
+              className="shifts"
               style={{
                 border: "1px solid black",
-                width: "100%",
-                height: " 100%",
-                borderRadius: 40,
+                height: 180,
+                minWidth: 100,
+                maxWidth: 100,
+                borderRadius: 10,
                 overflow: "hidden",
+                alignSelf: "center", // Center content vertically
                 margin: 5,
-                padding: 50,
                 position: "relative", // Make this relative to position the checkbox
                 justifyContent: "center",
               }}
@@ -76,9 +88,10 @@ export default function Wage() {
             >
               <input
                 style={{
-                  position: "absolute",
+                  position: "relative",
                   top: 10, // Adjust the top positioning
                   left: 10, // Adjust the right positioning
+                  paddingBottom: 3,
                 }}
                 type="checkbox"
                 onClick={() => {
@@ -86,22 +99,21 @@ export default function Wage() {
                 }}
               />
               <div
-                class="details"
+                className="details"
                 style={{
-                  display: "flex", // Flexbox layout
                   flexDirection: "column", // Stack children vertically
                   justifyContent: "center", // Center content horizontally
-                  alignItems: "center", // Center content vertically
-                  height: 50, // Ensure it takes full height of the parent
+                  height: "100vh", // Ensure it takes full height of the parent
                   textAlign: "center", // Center-align text
                   fontSize: 12,
                   borderWidth: 1,
                   borderColor: "black",
+                  width: "100%",
                 }}
               >
-                <h4>{event.title}</h4>
-                <p>{event.start.split("T")[1]}</p>
-                <p>{event.end.split("T")[1]}</p>
+                <p>{event.title}</p>
+                <p>start: {event.start.toLocaleTimeString()}</p>
+                <p>end: {event.end.toLocaleTimeString()}</p>
               </div>
             </div>
           );
