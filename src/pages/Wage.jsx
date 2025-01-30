@@ -8,50 +8,74 @@ import { useNavigate } from "react-router-dom";
  * @returns calculations for amount of hours worked
  */
 
-function WageCalc(events) {
-  let startTime = events.start?.split("T")[1];
-  let endTime = events.end?.split("T")[1];
-  var [startHour, startMin] = startTime?.split(":").map(Number);
-  var [endHour, endtMin] = endTime?.split(":").map(Number);
-  var strtInMin = startHour * 60 + startMin;
-  var endInMin = endHour * 60 + endtMin;
-  if (endInMin < strtInMin) {
-    endInMin += 24 * 60;
-  }
-  let totalMinutesWorked = Math.abs(strtInMin - endInMin);
-  let totalHoursWorked = Math.floor(totalMinutesWorked / 60);
-  const workedMinutes = totalMinutesWorked % 60;
-  const wageResult = { hours: totalHoursWorked, minutes: workedMinutes };
-  return wageResult;
-}
-
 /**
  *
  * @returns wage page
  */
+
 export default function Wage() {
   const navigation = useNavigate();
-
   const location = useLocation();
-
   const eventsParam = location.state.evnt;
 
   console.log("param", eventsParam);
 
-  var [totalHours, setTotalHours] = useState(0);
-  var [totalMinutes, setTotalMin] = useState(0);
+  //calc
+  function calculateExpectedWage(events) {
+    // for Each event being calculated
+    var weeklyhours = 0;
+    var weeklyMin = 0;
+    events?.forEach((e) => {
+      var startHours = 0;
+      var endHours = 0;
 
-  function handleWageCalculation() {
-    let totalMinutesWorked = 0;
-    eventsParam.forEach((shift) => {
-      const { hours, minutes } = WageCalc(shift);
+      let totalShiftHours = 0;
+      let totalShiftMin = 0;
 
-      totalMinutesWorked += hours * 60 + minutes;
+      // grab start timne and time of day
+      const startTime = e.start.toLocaleTimeString().split(" ");
+      // grab end timne and time of day
+      const endTimme = e.end.toLocaleTimeString().split(" ");
+      //split start time into minutes and hours
+      const [sHours, sMin] = startTime[0].split(":");
+      //split end time into  minutes and hours
+      const [sEnd, eMin] = endTimme[0].split(":");
+      // convert the start of shift to int
+      startHours += parseInt(sHours, 10);
+      // convert the end of shift to int
 
-      setTotalHours(totalMinutesWorked / 60);
-      setTotalMin(totalMinutesWorked % 60);
+      endHours += parseInt(sEnd, 10);
+      // get total hours worked from start to end of shift
+
+      totalShiftHours = Math.abs(endHours - startHours);
+
+      weeklyhours += totalShiftHours;
+      totalShiftMin = Math.abs(eMin - sMin);
+      weeklyMin += totalShiftMin;
+
+      console.log(
+        e.title,
+        "hours worked",
+        totalShiftHours,
+        "min worked",
+        totalShiftMin,
+        "from",
+        startTime,
+        "to",
+        endTimme
+      );
     });
+
+    if (weeklyMin >= 60) {
+      let hoursToAdd = weeklyMin / 60;
+      weeklyMin = 0;
+      weeklyhours += hoursToAdd;
+    }
+    console.log("totla hours worked", weeklyhours);
+
+    return weeklyhours;
   }
+
   return (
     <>
       <button onClick={() => navigation(-1)}>back</button>
@@ -120,12 +144,9 @@ export default function Wage() {
         })}
       </div>
 
-      <button onClick={handleWageCalculation}> calculate</button>
-
-      <h4>
-        {totalHours} Hours and {totalMinutes} minutes
-      </h4>
-      <h5>wage: {totalHours * 23}</h5>
+      <h3 style={{ textAlign: "center" }}>
+        Scheduled hours this week: {calculateExpectedWage(eventsParam)}
+      </h3>
     </>
   );
 }
