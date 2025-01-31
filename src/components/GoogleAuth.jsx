@@ -27,6 +27,8 @@ export const exchangeCodeForToken = async (code) => {
       grant_type: "authorization_code",
     });
 
+    localStorage.setItem("user", response.data.access_token);
+
     return response.data.access_token;
 
     // Handle the access token (e.g., save to state, localStorage, etc.)
@@ -45,6 +47,9 @@ export const fetchEvents = async (token) => {
         },
       }
     );
+
+    localStorage.setItem("user", response.data);
+    console.log("data", JSON.stringify(response));
 
     console.log("Events fetched:", response.data);
     return response.data.items;
