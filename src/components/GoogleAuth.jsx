@@ -47,7 +47,7 @@ export const fetchEvents = async (token) => {
     );
 
     console.log("Events fetched:", response.data);
-    return response.data.items;
+    return response.data;
   } catch (error) {
     console.error("Error fetching calendar events:", error);
   }

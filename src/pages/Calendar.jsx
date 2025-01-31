@@ -111,6 +111,7 @@ export default function CalendarEvents() {
   const [modalOpen, setModalOpen] = useState(false);
   const [closeModal, setModalClosed] = useState(!modalOpen);
   const [eventSummary, setEventSummary] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchGoogleEvents = async () => {
@@ -124,12 +125,16 @@ export default function CalendarEvents() {
           const token = await exchangeCodeForToken(code);
           setAccessToken(token);
           const events = await fetchEvents(token);
-          const newCalendarEvents = events?.map((item) => {
-            var startDate = new Date(item.start.dateTime);
-            var endDate = new Date(item.end.dateTime);
+          setUsername(events.summary);
+          console.log("my events", events.summary);
+          const newCalendarEvents = events.items?.map((e) => {
+            var startDate = new Date(e.start.dateTime);
+            var endDate = new Date(e.end.dateTime);
+
+            console.log("my self", e);
 
             return {
-              title: item.summary,
+              title: e.summary,
               start: startDate,
               end: endDate,
             };
@@ -208,6 +213,7 @@ export default function CalendarEvents() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
+            <h2>Hello,{username}</h2>
             <FullCalendar
               plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
