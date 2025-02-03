@@ -27,7 +27,7 @@ export const exchangeCodeForToken = async (code) => {
       grant_type: "authorization_code",
     });
 
-    localStorage.setItem("user", response.data.access_token);
+    localStorage.setItem("access_token", response.data.access_token);
 
     return response.data.access_token;
 
