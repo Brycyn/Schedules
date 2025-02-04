@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import AuthContext, { AuthProvider } from "../context/AuthContext";
 
 /**
  *
@@ -16,12 +17,14 @@ import { useNavigate } from "react-router-dom";
 export default function Wage() {
   const navigation = useNavigate();
   const location = useLocation();
+  const today = new Date();
   const eventsParam = location.state.evnt;
 
+  const auth = useContext(AuthContext);
   useEffect(() => {
     const loggedinUser = localStorage.getItem("user");
 
-    console.log("username", loggedinUser);
+    console.log("username", auth);
   }, []);
   console.log("param", eventsParam);
 
@@ -30,7 +33,10 @@ export default function Wage() {
     // for Each event being calculated
     var weeklyhours = 0;
     var weeklyMin = 0;
-    events?.forEach((e) => {
+    const evnt = events.filter((ev) => ev.end >= today);
+
+    evnt?.forEach((e) => {
+      console.log("filtered_events", evnt);
       var startHours = 0;
       var endHours = 0;
 
@@ -98,54 +104,55 @@ export default function Wage() {
         }}
       >
         {eventsParam.map((event, index) => {
-          return (
-            <div
-              className="shifts"
-              style={{
-                border: "1px solid black",
-                height: 180,
-                minWidth: 100,
-                maxWidth: 100,
-                borderRadius: 10,
-                overflow: "hidden",
-                alignSelf: "center", // Center content vertically
-                margin: 5,
-                position: "relative", // Make this relative to position the checkbox
-                justifyContent: "center",
-              }}
-              key={index}
-            >
-              <input
-                style={{
-                  position: "relative",
-                  top: 10, // Adjust the top positioning
-                  left: 10, // Adjust the right positioning
-                  paddingBottom: 3,
-                }}
-                type="checkbox"
-                onClick={() => {
-                  console.log(event.title);
-                }}
-              />
+          if (event.end >= today)
+            return (
               <div
-                className="details"
+                className="shifts"
                 style={{
-                  flexDirection: "column", // Stack children vertically
-                  justifyContent: "center", // Center content horizontally
-                  height: "100vh", // Ensure it takes full height of the parent
-                  textAlign: "center", // Center-align text
-                  fontSize: 12,
-                  borderWidth: 1,
-                  borderColor: "black",
-                  width: "100%",
+                  border: "1px solid black",
+                  height: 180,
+                  minWidth: 100,
+                  maxWidth: 100,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  alignSelf: "center", // Center content vertically
+                  margin: 5,
+                  position: "relative", // Make this relative to position the checkbox
+                  justifyContent: "center",
                 }}
+                key={index}
               >
-                <p>{event.title}</p>
-                <p>start: {event.start.toLocaleTimeString()}</p>
-                <p>end: {event.end.toLocaleTimeString()}</p>
+                <input
+                  style={{
+                    position: "relative",
+                    top: 10, // Adjust the top positioning
+                    left: 10, // Adjust the right positioning
+                    paddingBottom: 3,
+                  }}
+                  type="checkbox"
+                  onClick={() => {
+                    console.log(event.title);
+                  }}
+                />
+                <div
+                  className="details"
+                  style={{
+                    flexDirection: "column", // Stack children vertically
+                    justifyContent: "center", // Center content horizontally
+                    height: "100vh", // Ensure it takes full height of the parent
+                    textAlign: "center", // Center-align text
+                    fontSize: 12,
+                    borderWidth: 1,
+                    borderColor: "black",
+                    width: "100%",
+                  }}
+                >
+                  <p>{event.title}</p>
+                  <p>start: {event.start.toLocaleTimeString()}</p>
+                  <p>end: {event.end.toLocaleTimeString()}</p>
+                </div>
               </div>
-            </div>
-          );
+            );
         })}
       </div>
 
