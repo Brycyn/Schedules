@@ -3,14 +3,17 @@ import './App.css'
 import Wage from './pages/Wage';
 import CalendarEvents from './pages/Calendar';
 import AppRoutes from './routesConfig';
+import { AuthProvider } from './context/AuthContext';
+
 
 
 function App() {
 
   return (
     <>
-      <AppRoutes />
-
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
 
     </>
 

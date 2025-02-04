@@ -1,17 +1,19 @@
 import "./App.css";
 import SearchButton from "./components/Calendar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   AuthenticateWithGoogle,
   exchangeCodeForToken,
   fetchEvents,
 } from "./components/GoogleAuth";
 import CalendarEvents from "./components/Calendar";
+import AuthContext from "../context/AuthContext";
 
 function EventsPage() {
   const [userInfo, setUserInfo] = useState(null);
   const [events, setEvents] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -20,7 +22,7 @@ function EventsPage() {
     console.log(urlParams);
 
     if (code) {
-      exchangeCodeForToken(code).then((token) => {
+      auth.exchangeCodeForToken(code).then((token) => {
         setAccessToken(token);
         fetchEvents(token).then((events) => {
           setEvents(events);
