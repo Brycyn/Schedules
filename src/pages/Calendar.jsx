@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 import ReactModal from "react-modal";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   AuthenticateWithGoogle,
   exchangeCodeForToken,
@@ -21,12 +21,18 @@ import {
 } from "react-router-dom";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
+let logged_in = true;
 
 export const Menu = ({ events }) => {
   const [menuStatus, setMenuStatus] = useState(false);
   const navigation = useNavigate();
+
+  useEffect(() => {
+    logged_in = true;
+  });
 
   function navigateToWage() {
     const eventString = JSON.stringify(events);
@@ -45,6 +51,8 @@ export const Menu = ({ events }) => {
 
     return setMenuStatus(!menuStatus);
   }
+
+  const auth = useContext(AuthContext);
   return (
     <>
       <button
@@ -91,7 +99,9 @@ export const Menu = ({ events }) => {
           <li>
             <button
               style={{ borderRadius: 50, overflow: "hidden" }}
-              onClick={AuthenticateWithGoogle}
+              onClick={() => {
+                AuthenticateWithGoogle();
+              }}
             >
               {" "}
               <FcGoogle /> Login With Google
@@ -113,6 +123,7 @@ export default function CalendarEvents() {
   const [eventSummary, setEventSummary] = useState("");
   const [username, setUsername] = useState("");
 
+  const auth = useContext(AuthContext);
   useEffect(() => {
     const fetchGoogleEvents = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -122,7 +133,7 @@ export default function CalendarEvents() {
 
       if (code) {
         try {
-          const token = await exchangeCodeForToken(code);
+          const token = await auth.exchangeCodeForToken(code);
           setAccessToken(token);
           const events = await fetchEvents(token);
           setUsername(events.summary);
@@ -177,6 +188,7 @@ export default function CalendarEvents() {
     new Date().toISOString().split("T")[0]
   );
 
+  console.log("auth parameter", auth);
   console.log("initial calendar events", calendarEvents);
   return (
     <>
@@ -213,14 +225,22 @@ export default function CalendarEvents() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <h2>Hello,{username}</h2>
+            {auth.isAuthenticated ? (
+              <h2 style={{ textAlign: "center" }}>
+                Hello, {username.split("@")[0]}
+              </h2>
+            ) : (
+              ""
+            )}
+
             <FullCalendar
               plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
               headerToolbar={{
+                start: "title",
                 left: "prev,next",
                 center: "title",
-                right: "dayGridDay,dayGridWeek,dayGridMonth",
+                right: "dayGridWeek,dayGridMonth",
               }}
               dayHeaderFormat={{
                 weekday: "short",

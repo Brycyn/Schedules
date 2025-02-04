@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem("access_token")
   );
 
-  const [isAuthenticated, setAuthStatus] = useState(!!accessToken);
+  const [isAuthenticated, setAuthStatus] = useState(false);
 
   useEffect(() => {
     const checkForTokenExpirary = async () => {

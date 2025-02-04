@@ -5,7 +5,7 @@ import FourOhFour from "../images/FourOhFour.png";
 export const Banner = () => {
   return (
     <div
-      class="banner"
+      className="banner"
       style={{
         border: "1px solid black",
         flexDirection: "row",
@@ -23,7 +23,7 @@ export const Banner = () => {
           textAlign: "center",
           marginRight: 34,
         }}
-        class="banner-text"
+        className="banner-text"
       >
         <p>Welcome</p>
       </div>
