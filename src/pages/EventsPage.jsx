@@ -21,7 +21,7 @@ function EventsPage() {
     console.log(code);
     console.log(urlParams);
 
-    if (code) {
+    if (code & auth.isAuthenticated) {
       auth.exchangeCodeForToken(code).then((token) => {
         setAccessToken(token);
         fetchEvents(token).then((events) => {

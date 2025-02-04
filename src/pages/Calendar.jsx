@@ -230,7 +230,7 @@ export default function CalendarEvents() {
                 Hello, {username.split("@")[0]}
               </h2>
             ) : (
-              ""
+              " "
             )}
 
             <FullCalendar
