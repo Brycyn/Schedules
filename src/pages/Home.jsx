@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Menu } from "./Calendar";
 import FourOhFour from "../images/FourOhFour.png";
+import AuthContext, { AuthProvider } from "../context/AuthContext";
+import { useLocation } from "react-router";
 
 export const Banner = () => {
   return (
@@ -50,6 +52,13 @@ export const CenteredImage = () => {
 };
 
 export default function Home() {
+  const location = useLocation();
+
+  const eventsParam = location.state;
+  const auth = useContext(AuthContext);
+  console.log(auth.isAuthenticated);
+  console.log("ppm", eventsParam);
+
   return (
     <>
       <Banner />

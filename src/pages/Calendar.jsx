@@ -85,10 +85,17 @@ export const Menu = ({ events }) => {
           }}
         >
           <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/" state={{ code: localStorage.getItem("code") }}>
+              Home
+            </NavLink>
           </li>
           <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/calendar">Schedule</NavLink>
+            <NavLink
+              to="/calendar"
+              state={{ code: localStorage.getItem("code") }}
+            >
+              Schedule
+            </NavLink>
           </li>
           <li style={{ paddingBottom: "25px" }}>
             <NavLink to="/">Contacts</NavLink>
@@ -132,17 +139,20 @@ export default function CalendarEvents() {
       console.log(urlParams);
 
       if (code) {
+        localStorage.setItem("code", code);
+        const co = localStorage.getItem("code");
+
         try {
-          const token = await auth.exchangeCodeForToken(code);
+          const token = await auth.exchangeCodeForToken(co);
           setAccessToken(token);
-          const events = await fetchEvents(token);
+          const tkn = localStorage.getItem("access_token");
+
+          const events = await fetchEvents(tkn);
           setUsername(events.summary);
           console.log("my events", events.summary);
           const newCalendarEvents = events.items?.map((e) => {
             var startDate = new Date(e.start.dateTime);
             var endDate = new Date(e.end.dateTime);
-
-            console.log("my self", e);
 
             return {
               title: e.summary,
@@ -153,18 +163,16 @@ export default function CalendarEvents() {
 
           setCalendarEvent(newCalendarEvents);
           console.log(calendarEvents);
-          console.log(typeof events[5].start?.dateTime, "helper");
         } catch (error) {}
       }
     };
+
     fetchGoogleEvents();
   }, []);
 
   useEffect(() => {
     // Log calendar events when they are updated
     console.log("Updated Calendar Events:", calendarEvents);
-    console.log("helper");
-    console.log("rn", new Date());
   }, [calendarEvents]);
 
   const insertEvent = async (body) => {

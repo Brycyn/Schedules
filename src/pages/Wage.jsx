@@ -89,7 +89,14 @@ export default function Wage() {
 
   return (
     <>
-      <button onClick={() => navigation(-1)}>back</button>
+      <button
+        onClick={async () => {
+          navigation(-1);
+          await auth.refreshAccessToken();
+        }}
+      >
+        back
+      </button>
       <div
         className="detail-container"
         style={{

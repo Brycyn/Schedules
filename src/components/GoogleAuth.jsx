@@ -43,7 +43,7 @@ export const fetchEvents = async (token) => {
       "https://www.googleapis.com/calendar/v3/calendars/primary/events/",
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       }
     );

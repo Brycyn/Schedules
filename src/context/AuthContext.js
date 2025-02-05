@@ -65,7 +65,8 @@ export const AuthProvider = ({ children }) => {
         grant_type: "refresh_token",
       });
 
-      const { access_token, expires_in } = response.data;
+
+      const { access_token, expires_in, } = response.data;
       const expiryTime = Date.now() + expires_in * 1000;
 
       localStorage.setItem("access_token", access_token);
@@ -73,6 +74,19 @@ export const AuthProvider = ({ children }) => {
 
       setAccessToken(access_token);
       setAuthStatus(true);
+
+
+      const events = await axios.get(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events/",
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      console.log('refresh events', events.data.items)
+
     } catch (error) {
       console.error("Error refreshing access token:", error);
       setAuthStatus(false);
@@ -89,7 +103,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, isAuthenticated, exchangeCodeForToken, logout }}
+      value={{ accessToken, isAuthenticated, exchangeCodeForToken, refreshAccessToken, logout }}
     >
       {children}
     </AuthContext.Provider>
