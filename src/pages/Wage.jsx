@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import AuthContext, { AuthProvider } from "../context/AuthContext";
+import { Menu } from "./Calendar";
 
 /**
  *
@@ -89,6 +90,7 @@ export default function Wage() {
 
   return (
     <>
+      <Menu />
       <button
         onClick={async () => {
           navigation(-1);
@@ -97,6 +99,7 @@ export default function Wage() {
       >
         back
       </button>
+
       <div
         className="detail-container"
         style={{

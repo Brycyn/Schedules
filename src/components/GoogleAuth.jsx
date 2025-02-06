@@ -14,6 +14,9 @@ export function AuthenticateWithGoogle() {
     scope
   )}&access_type=offline`;
 
+  const urlParams = new URLSearchParams(window.location.search);
+
+  console.log("auth params from google", urlParams);
   window.location.href = authUrl;
 }
 

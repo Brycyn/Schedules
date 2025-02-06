@@ -3,7 +3,7 @@ import "../App.css";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-
+import { useLocation } from "react-router-dom";
 import ReactModal from "react-modal";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -85,14 +85,25 @@ export const Menu = ({ events }) => {
           }}
         >
           <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/" state={{ code: localStorage.getItem("code") }}>
+            <NavLink
+              to="/"
+              state={{
+                code: localStorage.getItem("code")
+                  ? localStorage.getItem("code")
+                  : "",
+              }}
+            >
               Home
             </NavLink>
           </li>
           <li style={{ paddingBottom: "25px" }}>
             <NavLink
               to="/calendar"
-              state={{ code: localStorage.getItem("code") }}
+              state={{
+                code: localStorage.getItem("code")
+                  ? localStorage.getItem("code")
+                  : "",
+              }}
             >
               Schedule
             </NavLink>
@@ -129,21 +140,46 @@ export default function CalendarEvents() {
   const [closeModal, setModalClosed] = useState(!modalOpen);
   const [eventSummary, setEventSummary] = useState("");
   const [username, setUsername] = useState("");
+  const location = useLocation();
 
   const auth = useContext(AuthContext);
   useEffect(() => {
     const fetchGoogleEvents = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
+      const navCode = location.state?.code;
       console.log(code);
-      console.log(urlParams);
+      console.log("perms", urlParams);
+      console.log("perms h", navCode);
 
       if (code) {
         localStorage.setItem("code", code);
-        const co = localStorage.getItem("code");
 
         try {
-          const token = await auth.exchangeCodeForToken(co);
+          const token = await auth.exchangeCodeForToken(code);
+          setAccessToken(token);
+          const tkn = localStorage.getItem("access_token");
+
+          const events = await fetchEvents(tkn);
+          setUsername(events.summary);
+          console.log("my events", events.summary);
+          const newCalendarEvents = events.items?.map((e) => {
+            var startDate = new Date(e.start.dateTime);
+            var endDate = new Date(e.end.dateTime);
+
+            return {
+              title: e.summary,
+              start: startDate,
+              end: endDate,
+            };
+          });
+
+          setCalendarEvent(newCalendarEvents);
+          console.log(calendarEvents);
+        } catch (error) {}
+      } else if (!code && navCode) {
+        try {
+          const token = await auth.exchangeCodeForToken(navCode);
           setAccessToken(token);
           const tkn = localStorage.getItem("access_token");
 
