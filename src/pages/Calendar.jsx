@@ -178,28 +178,30 @@ export default function CalendarEvents() {
           console.log(calendarEvents);
         } catch (error) {}
       } else if (!code && navCode) {
-        try {
-          const token = await auth.exchangeCodeForToken(navCode);
-          setAccessToken(token);
-          const tkn = localStorage.getItem("access_token");
+        if (auth.isAuthenticated) {
+          try {
+            const token = await auth.exchangeCodeForToken(navCode);
+            setAccessToken(token);
+            const tkn = localStorage.getItem("access_token");
 
-          const events = await fetchEvents(tkn);
-          setUsername(events.summary);
-          console.log("my events", events.summary);
-          const newCalendarEvents = events.items?.map((e) => {
-            var startDate = new Date(e.start.dateTime);
-            var endDate = new Date(e.end.dateTime);
+            const events = await fetchEvents(tkn);
+            setUsername(events.summary);
+            console.log("my events", events.summary);
+            const newCalendarEvents = events.items?.map((e) => {
+              var startDate = new Date(e.start.dateTime);
+              var endDate = new Date(e.end.dateTime);
 
-            return {
-              title: e.summary,
-              start: startDate,
-              end: endDate,
-            };
-          });
+              return {
+                title: e.summary,
+                start: startDate,
+                end: endDate,
+              };
+            });
 
-          setCalendarEvent(newCalendarEvents);
-          console.log(calendarEvents);
-        } catch (error) {}
+            setCalendarEvent(newCalendarEvents);
+            console.log(calendarEvents);
+          } catch (error) {}
+        }
       }
     };
 
