@@ -1,4 +1,32 @@
-# Getting Started with Create React App
+# Practice React Project
+
+## About
+
+This React Project is a project that I am using to sharpen my skills in React. I have set up a Google Cloud Developer account that is connected to this project. This allows me to make queries into the Google CLoud and retireve informaition from Users that are approved/ logged in. Rigth now I am only fetching and Creating google calendar events.
+
+Over the last 7 months, I have been spending my time working on the mobile app for a private Christian college using React Navite & Expo, but I wanted to be able to add React to my tool belt. I am recent Grad with a Bachelors in computer Science and an Associates in Business & Economics. As I continue to add to this project, feel free to leave tips or suggections as I am always looking to learn more!
+
+## Pages
+
+### Home Page
+
+The Home Page is Currently Under Construction
+
+### Wage Page
+
+The wage page holds a list of all upcoming "shifts".
+
+** Note: Shifts are pulled from google calender after sign in **
+
+### Calendar Page
+
+The calendar page is a simple calendar that fetches events from google after the user logs in with their google account.
+
+## Authentication
+
+The Authentication is handled with GoogleOAuthProvider.
+
+Api calls are made with axios.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
