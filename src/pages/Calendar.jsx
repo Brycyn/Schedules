@@ -4,24 +4,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useLocation } from "react-router-dom";
-import ReactModal from "react-modal";
 import { useState, useEffect, useContext } from "react";
-import {
-  AuthenticateWithGoogle,
-  exchangeCodeForToken,
-  fetchEvents,
-  createEvents,
-} from "../components/GoogleAuth";
+import { AuthenticateWithGoogle, fetchEvents } from "../components/GoogleAuth";
 import { FcGoogle } from "react-icons/fc";
-import {
-  NavLink,
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { NavLink, BrowserRouter as Router } from "react-router-dom";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import EventModal from "../components/EventModal";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 let logged_in = true;
@@ -137,8 +127,7 @@ export default function CalendarEvents() {
   const [calendarEvents, setCalendarEvent] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [closeModal, setModalClosed] = useState(!modalOpen);
-  const [eventSummary, setEventSummary] = useState("");
+
   const [username, setUsername] = useState("");
   const location = useLocation();
 
@@ -213,22 +202,6 @@ export default function CalendarEvents() {
     console.log("Updated Calendar Events:", calendarEvents);
   }, [calendarEvents]);
 
-  const insertEvent = async (body) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    if (code) {
-      if (!accessToken) {
-        alert("Need access Code");
-        return;
-      } else {
-        console.log("this code", code);
-
-        const request = await createEvents(accessToken, body);
-
-        console.log("Complete events", request);
-      }
-    }
-  };
   const [eventName, setEventName] = useState("");
   const [startDate, setStartDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -249,14 +222,6 @@ export default function CalendarEvents() {
           <Menu events={calendarEvents} />
         </header>
 
-        <div>
-          {userInfo && (
-            <>
-              <h1>{userInfo.name}</h1>
-              <h2>{userInfo.email}</h2>
-            </>
-          )}
-        </div>
         <div
           style={{
             height: "100vh",
@@ -317,118 +282,16 @@ export default function CalendarEvents() {
               justifyContent: "center",
               marginTop: 10,
             }}
-            onClick={() => setModalOpen(true)}
+            onClick={() => {
+              setModalOpen(!modalOpen);
+              console.log("modal", modalOpen);
+            }}
           >
             Add Events
           </button>
         </div>
-
-        <ReactModal
-          isOpen={modalOpen}
-          contentLabel="Add Event"
-          style={{
-            content: {
-              width: "50%", // Adjust as needed
-              height: "50%", // Adjust as needed
-              margin: "auto", // Center the modal
-              padding: "20px", // Add padding inside the modal
-              borderRadius: "10px", // Optional: Rounded corners
-              transform: "scale(0.7)", // Scaling if desired
-              alignContent: "center",
-              justifyContent: "center",
-            },
-            overlay: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)", // Dim the background
-            },
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              padding: "9px",
-              flexDirection: "row",
-            }}
-          >
-            <header>
-              Add Event{" "}
-              <button
-                title="close modal"
-                onClick={() => {
-                  console.log("hello");
-                  return setModalOpen(false);
-                }}
-                style={{ justifyContent: "flex-end" }}
-              >
-                X
-              </button>
-            </header>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            <p>
-              <strong>Date:</strong>
-            </p>
-            <input
-              type="date"
-              title="Select Date"
-              onChange={(e) => {
-                setStartDate(e.target.value);
-                console.log(e.target.value);
-              }}
-            ></input>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            <p>
-              <strong>Event Name:</strong>
-            </p>{" "}
-            <input
-              onChange={(e) => {
-                setEventName(e.target.value);
-                console.log(e.target.value);
-              }}
-            ></input>
-          </div>
-
-          <div
-            style={{
-              paddingTop: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-            }}
-          >
-            <button
-              title="close modal"
-              onClick={() =>
-                insertEvent({
-                  summary: eventName,
-                  start: { date: startDate },
-                  end: { date: startDate },
-                })
-              }
-              style={{ justifyContent: "center" }}
-            >
-              Create Event
-            </button>
-          </div>
-        </ReactModal>
       </div>
+      {modalOpen && <EventModal closeModal={() => setModalOpen(false)} />}
     </>
   );
 }

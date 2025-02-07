@@ -12,14 +12,9 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 
 root.render(
   <React.StrictMode>
-
     <GoogleOAuthProvider clientId={clientId}>
-
       <BrowserRouter>
-
         <App />
-
-
       </BrowserRouter>
     </GoogleOAuthProvider>
   </React.StrictMode>
