@@ -17,23 +17,14 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 let logged_in = true;
 
 export const Menu = ({ events }) => {
+  const location = useLocation();
+
   const [menuStatus, setMenuStatus] = useState(false);
   const navigation = useNavigate();
 
   useEffect(() => {
     logged_in = true;
   });
-
-  function navigateToWage() {
-    const eventString = JSON.stringify(events);
-
-    console.log(" prev events", JSON.stringify(events));
-    console.log(" 1 events", JSON.stringify(events[5]));
-
-    console.log(" new events", eventString);
-
-    navigation(`/wage`, { state: { evnt: events } });
-  }
 
   function toggleMenu() {
     console.log("Client IDs: ", clientId);
@@ -43,8 +34,10 @@ export const Menu = ({ events }) => {
   }
 
   const auth = useContext(AuthContext);
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <>
+    <div>
       <button
         style={{ background: "none", border: "none" }}
         onClick={toggleMenu}
@@ -58,66 +51,107 @@ export const Menu = ({ events }) => {
         >
           x
         </button>
-        <ul
+        <div
+          className="menu-content"
           style={{
-            fontSize: "20px",
-            listStyle: "none",
-            position: "fixed", // Fixes the menu position
-            top: 0,
-            left: menuStatus ? "0" : "-200px", // Slide in/out logic
-            height: "100%",
-            width: "200px",
-            backgroundColor: "#f9f9f9",
-            borderRight: "2px solid black",
-            transition: "left 0.5s ease", // Smooth slide transition
-            boxShadow: "2px 0 5px rgba(0,0,0,0.1)", // Optional shadow for depth
-            zIndex: 1000, // Ensures it appears above other elements
+            display: "flex",
+            flexDirection: "column", // Stack items vertically
+            alignItems: "flex-start", // Align to the left
+            paddingLeft: "10px", // Add some spacing from the edge
           }}
         >
-          <li style={{ paddingBottom: "25px" }}>
-            <NavLink
-              to="/"
-              state={{
-                code: localStorage.getItem("code")
-                  ? localStorage.getItem("code")
-                  : "",
-              }}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li style={{ paddingBottom: "25px" }}>
-            <NavLink
-              to="/calendar"
-              state={{
-                code: localStorage.getItem("code")
-                  ? localStorage.getItem("code")
-                  : "",
-              }}
-            >
-              Schedule
-            </NavLink>
-          </li>
-          <li style={{ paddingBottom: "25px" }}>
-            <NavLink to="/">Contacts</NavLink>
-          </li>
-          <li style={{ paddingBottom: "25px" }} onClick={navigateToWage}>
-            Wage Calulator
-          </li>
-          <li>
-            <button
-              style={{ borderRadius: 50, overflow: "hidden" }}
-              onClick={() => {
-                AuthenticateWithGoogle();
-              }}
-            >
-              {" "}
-              <FcGoogle /> Login With Google
-            </button>
-          </li>
-        </ul>
+          <ul
+            style={{
+              fontSize: "20px",
+              listStyle: "none",
+              position: "fixed", // Fixes the menu position
+              top: 0,
+              left: menuStatus ? "0" : "-200px", // Slide in/out logic
+              height: "100%",
+              width: "200px",
+              backgroundColor: "#f9f9f9",
+              borderRight: "2px solid black",
+              transition: "left 0.5s ease", // Smooth slide transition
+              boxShadow: "2px 0 5px rgba(0,0,0,0.1)", // Optional shadow for depth
+              zIndex: 1000, // Ensures it appears above other elements
+              textAlign: "left",
+              marginLeft: "5px 0",
+            }}
+          >
+            <li style={{ paddingBottom: "25px" }}>
+              <NavLink
+                to="/"
+                state={{
+                  code: localStorage.getItem("code")
+                    ? localStorage.getItem("code")
+                    : "",
+                }}
+              >
+                Home
+              </NavLink>
+            </li>
+            {auth.isAuthenticated && (
+              <>
+                <li style={{ paddingBottom: "25px" }}>
+                  <NavLink
+                    to="/calendar"
+                    state={{
+                      code: localStorage.getItem("code")
+                        ? localStorage.getItem("code")
+                        : "",
+                    }}
+                  >
+                    Schedule
+                  </NavLink>
+                </li>
+                <li style={{ paddingBottom: "25px" }}>
+                  <NavLink to="/">Contacts</NavLink>
+                </li>
+                <li style={{ paddingBottom: "25px" }}>
+                  <NavLink to="/wage" state={{ evnt: events }}>
+                    Wage Calulator
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {!auth.isAuthenticated && (
+              <li>
+                <button
+                  style={{ borderRadius: 50, overflow: "hidden" }}
+                  onClick={() => {
+                    AuthenticateWithGoogle();
+                  }}
+                >
+                  {" "}
+                  <FcGoogle /> Login With Google
+                </button>
+              </li>
+            )}
+            {location.pathname.includes("calendar") && auth.isAuthenticated ? (
+              <li>
+                <button
+                  style={{
+                    borderRadius: 50,
+                    overflow: "hidden",
+                    justifyContent: "center",
+                    marginTop: 10,
+                  }}
+                  onClick={() => {
+                    setModalOpen(!modalOpen);
+                    console.log("modal", modalOpen);
+                  }}
+                >
+                  Add Events
+                </button>
+              </li>
+            ) : (
+              ""
+            )}
+          </ul>
+        </div>
+        {modalOpen && <EventModal closeModal={() => setModalOpen(false)} />}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -140,6 +174,7 @@ export default function CalendarEvents() {
       console.log(code);
       console.log("perms", urlParams);
       console.log("perms h", navCode);
+      console.log("nav loc ", location);
 
       if (code) {
         localStorage.setItem("code", code);
@@ -275,23 +310,8 @@ export default function CalendarEvents() {
               }}
             />
           </div>
-          <button
-            style={{
-              borderRadius: 50,
-              overflow: "hidden",
-              justifyContent: "center",
-              marginTop: 10,
-            }}
-            onClick={() => {
-              setModalOpen(!modalOpen);
-              console.log("modal", modalOpen);
-            }}
-          >
-            Add Events
-          </button>
         </div>
       </div>
-      {modalOpen && <EventModal closeModal={() => setModalOpen(false)} />}
     </>
   );
 }
