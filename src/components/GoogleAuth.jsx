@@ -93,7 +93,7 @@ export const createEvents = async (token, body) => {
         },
       }
     );
-    console.log("data", response.data);
+    console.log("data liner", response.data);
   } catch (error) {
     console.error("error", error);
   }

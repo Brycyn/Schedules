@@ -4,7 +4,7 @@ import { createEvents } from "./GoogleAuth";
 
 const insertEvent = async (body) => {
   const accessToken = localStorage.getItem("access_token");
-
+  console.log(" bought-e", body);
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
   if (code) {
@@ -24,6 +24,7 @@ const insertEvent = async (body) => {
 export default function EventModal({ closeModal }) {
   const [isOpen, setModalOpen] = useState(true);
   const [startDate, setStartDate] = useState({});
+
   const [eventName, setEventName] = useState({});
 
   const [endDate, setEndDate] = useState({});
@@ -88,7 +89,7 @@ export default function EventModal({ closeModal }) {
             title="Select Start Date"
             style={{ marginBottom: 10 }}
             onChange={(e) => {
-              setStartDate(e.target.value);
+              setStartDate(e.target.value + ":00");
               console.log(e.target.value);
             }}
           ></input>
@@ -98,7 +99,7 @@ export default function EventModal({ closeModal }) {
           type="datetime-local"
           title="Select End Date"
           onChange={(e) => {
-            setStartDate(e.target.value);
+            setEndDate(e.target.value + ":00");
             console.log(e.target.value);
           }}
         ></input>
@@ -132,10 +133,15 @@ export default function EventModal({ closeModal }) {
           <button
             title="close modal"
             onClick={() => {
+              console.log({
+                summary: eventName,
+                start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
+                end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
+              });
               insertEvent({
                 summary: eventName,
-                start: { date: startDate },
-                end: { date: startDate },
+                start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
+                end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
               });
 
               closeModal();
