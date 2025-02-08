@@ -84,14 +84,24 @@ export default function EventModal({ closeModal }) {
             <strong>Date: </strong>
           </p>
           <input
-            type="date"
-            title="Select Date"
+            type="datetime-local"
+            title="Select Start Date"
+            style={{ marginBottom: 10 }}
             onChange={(e) => {
               setStartDate(e.target.value);
               console.log(e.target.value);
             }}
           ></input>
+          <br />
         </div>
+        <input
+          type="datetime-local"
+          title="Select End Date"
+          onChange={(e) => {
+            setStartDate(e.target.value);
+            console.log(e.target.value);
+          }}
+        ></input>
         <div
           style={{
             display: "flex",
