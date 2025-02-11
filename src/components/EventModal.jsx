@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { createEvents } from "./GoogleAuth";
-
+import { TfiCalendar } from "react-icons/tfi";
 const insertEvent = async (body) => {
   const accessToken = localStorage.getItem("access_token");
   console.log(" bought-e", body);
@@ -49,72 +49,56 @@ export default function EventModal({ closeModal }) {
       }}
     >
       <div className="modal-content">
-        <header
+        <div
           style={{
-            justifyContent: "space-between",
-            display: "flex",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
             flexDirection: "row",
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          <h1> Add Event </h1>
+          <h1 style={{}}> Add Event </h1>
           <button
             title="close modal"
             onClick={() => {
-              console.log("hello");
               closeModal();
             }}
             style={{
               justifyContent: "flex-end",
               overflow: "hidden",
               borderRadius: 60,
+              marginLeft: "auto",
               height: "50%",
+              backgroundColor: "white",
+              border: "none",
             }}
           >
             X
           </button>
-        </header>
+        </div>
 
         <div
+          className="mEvent-name"
           style={{
-            display: "flex",
             flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <p>
-            <strong>Date: </strong>
-          </p>
-          <input
-            type="datetime-local"
-            title="Select Start Date"
-            style={{ marginBottom: 10 }}
-            onChange={(e) => {
-              setStartDate(e.target.value + ":00");
-              console.log(e.target.value);
-            }}
-          ></input>
-          <br />
-        </div>
-        <input
-          type="datetime-local"
-          title="Select End Date"
-          onChange={(e) => {
-            setEndDate(e.target.value + ":00");
-            console.log(e.target.value);
-          }}
-        ></input>
-        <div
-          style={{
             display: "flex",
-            flexDirection: "row",
             alignItems: "center",
-            gap: "10px",
           }}
         >
           <p>
             <strong>Event Name:</strong>
           </p>{" "}
           <input
+            style={{
+              border: "none",
+              padding: 3,
+              marginLeft: 5,
+              borderBottom: "solid black",
+              height: "10px",
+            }}
             onChange={(e) => {
               setEventName(e.target.value);
               console.log(e.target.value);
@@ -124,37 +108,82 @@ export default function EventModal({ closeModal }) {
 
         <div
           style={{
-            paddingTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
             display: "flex",
+            flexDirection: "row",
           }}
         >
-          <button
-            title="close modal"
-            onClick={() => {
-              console.log({
-                summary: eventName,
-                start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
-                end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
-              });
-              insertEvent({
-                summary: eventName,
-                start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
-                end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
-              });
+          <strong> Start: </strong>
 
-              closeModal();
-            }}
+          <input
+            type="datetime-local"
+            title="Select Start Date"
+            className="dateSelect"
             style={{
-              justifyContent: "center",
-              overflow: "hidden",
-              borderRadius: 50,
+              border: "none",
+              justifyContent: "flex-end",
+              display: "flex",
             }}
-          >
-            Create Event
-          </button>
+            onChange={(e) => {
+              setStartDate(e.target.value + ":00");
+              console.log(e.target.value);
+            }}
+          ></input>
         </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <strong> End: </strong>
+          <input
+            type="datetime-local"
+            title="Select End Date"
+            className="dateSelect"
+            style={{ border: "none" }}
+            onChange={(e) => {
+              setEndDate(e.target.value + ":00");
+              console.log(e.target.value);
+            }}
+          ></input>
+        </div>
+      </div>
+      <div
+        style={{
+          paddingTop: 10,
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        <button
+          title="insert event"
+          onClick={() => {
+            console.log({
+              summary: eventName,
+              start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
+              end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
+            });
+            insertEvent({
+              summary: eventName,
+              start: { dateTime: startDate, timeZone: "America/Los_Angeles" },
+              end: { dateTime: endDate, timeZone: "America/Los_Angeles" },
+            });
+
+            closeModal();
+          }}
+          style={{
+            justifyContent: "center",
+            overflow: "hidden",
+            borderRadius: 50,
+            backgroundColor: "maroon",
+            position: "absolute",
+            bottom: 5,
+            right: 5,
+          }}
+        >
+          <p style={{ color: "white" }}> Create Event</p>
+        </button>
       </div>
     </ReactModal>
   );
