@@ -53,6 +53,8 @@ export default function EventModal({ closeModal }) {
           style={{
             position: "absolute",
             top: 0,
+            left: 0,
+            right: 0,
             flexDirection: "row",
             display: "flex",
             justifyContent: "space-between",
@@ -68,6 +70,7 @@ export default function EventModal({ closeModal }) {
               justifyContent: "flex-end",
               overflow: "hidden",
               borderRadius: 60,
+              marginLeft: "auto",
               height: "50%",
               backgroundColor: "white",
               border: "none",
