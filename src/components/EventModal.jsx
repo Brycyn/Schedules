@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactModal from "react-modal";
+import Modal from "react-modal";
 import { createEvents } from "./GoogleAuth";
 import { TfiCalendar } from "react-icons/tfi";
 const insertEvent = async (body) => {
@@ -30,7 +30,7 @@ export default function EventModal({ closeModal }) {
   const [endDate, setEndDate] = useState({});
 
   return (
-    <ReactModal
+    <Modal
       isOpen={isOpen}
       contentLabel="Add Event"
       style={{
@@ -185,6 +185,6 @@ export default function EventModal({ closeModal }) {
           <p style={{ color: "white" }}> Create Event</p>
         </button>
       </div>
-    </ReactModal>
+    </Modal>
   );
 }

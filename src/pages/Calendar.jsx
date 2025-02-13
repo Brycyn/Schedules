@@ -42,7 +42,7 @@ export const Menu = ({ events }) => {
         style={{ background: "none", border: "none" }}
         onClick={toggleMenu}
       >
-        <TfiMenuAlt size={20} />
+        <TfiMenuAlt className="menu" size={20} />
       </button>
       <div style={{ display: menuStatus !== true ? "none" : "flex" }}>
         <button

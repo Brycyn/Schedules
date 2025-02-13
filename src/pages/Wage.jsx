@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { Menu } from "./Calendar";
-
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 /**
  *
  * @param {*} events
