@@ -4,6 +4,7 @@ import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { Menu } from "./Calendar";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
 /**
  *
  * @param {*} events
@@ -90,7 +91,7 @@ export default function Wage() {
 
   return (
     <>
-      <Menu />
+      <NavBar />
       <button
         onClick={async () => {
           navigation(-1);
@@ -109,7 +110,7 @@ export default function Wage() {
           // overflowX: "auto", // "auto" instead of "scroll" to show only when needed
           height: "100%",
           width: "100%",
-
+          backgroundColor: "#b68e70",
           overflow: "scroll",
         }}
       >

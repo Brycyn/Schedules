@@ -3,34 +3,10 @@ import { Menu } from "./Calendar";
 import FourOhFour from "../images/FourOhFour.png";
 import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { useLocation } from "react-router";
+import NavBar from "../components/NavBar";
 
 export const Banner = () => {
-  return (
-    <div
-      className="banner"
-      style={{
-        border: "1px solid black",
-        flexDirection: "row",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center", // Vertically center items in the banner
-      }}
-    >
-      <Menu />
-      <div
-        style={{
-          flex: 1, // Takes up remaining space
-          display: "flex",
-          justifyContent: "center",
-          textAlign: "center",
-          marginRight: 34,
-        }}
-        className="banner-text"
-      >
-        <p>Welcome</p>
-      </div>
-    </div>
-  );
+  return <NavBar />;
 };
 
 export const CenteredImage = () => {
@@ -39,7 +15,6 @@ export const CenteredImage = () => {
       style={{
         display: "grid",
         placeItems: "center", // Centers both horizontally and vertically
-        height: 400, // Full height viewport
       }}
     >
       <img
@@ -61,9 +36,14 @@ export default function Home() {
 
   return (
     <>
-      <Banner />
-      <p style={{ textAlign: "center" }}>Home</p>
-      <div>
+      <div
+        style={{
+          backgroundColor: "#b68e70",
+        }}
+      >
+        <Banner />
+        <p style={{ textAlign: "center" }}>Home</p>
+
         <CenteredImage />
       </div>
     </>
