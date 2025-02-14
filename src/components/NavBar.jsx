@@ -1,11 +1,14 @@
 import { NavLink, useLocation } from "react-router";
 import { TfiUser } from "react-icons/tfi";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 export default function NavBar() {
   const location = useLocation();
+  const auth = useContext(AuthContext);
   return (
     <>
       <div className="header-container">
-        {console.log("loc", location.pathname)}
+        {console.log("loc", auth.username)}
         <div className="nav-contents">
           {location.pathname !== "/" && (
             <NavLink
@@ -36,7 +39,12 @@ export default function NavBar() {
             Contacts
           </NavLink>
         </div>
-        <TfiUser className="user" />
+        <TfiUser
+          className="user"
+          onClick={() => {
+            alert(auth.username ? `hello ${auth.username}` : "login");
+          }}
+        />
       </div>
     </>
   );

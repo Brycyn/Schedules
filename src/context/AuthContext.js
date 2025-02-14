@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   );
 
   const [isAuthenticated, setAuthStatus] = useState(false);
+  const [username, setUsername] = useState()
 
   useEffect(() => {
     const checkForTokenExpirary = async () => {
@@ -85,6 +86,7 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
+      setUsername(events.data.summary)
       console.log('refresh events', events.data.items)
 
     } catch (error) {
@@ -103,7 +105,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, isAuthenticated, exchangeCodeForToken, refreshAccessToken, logout }}
+      value={{ accessToken, isAuthenticated, username, exchangeCodeForToken, refreshAccessToken, logout }}
     >
       {children}
     </AuthContext.Provider>
