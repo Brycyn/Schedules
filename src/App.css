@@ -33,7 +33,7 @@
 }
 
 .fc-header-toolbar {
-  background-color: maroon !important;
+  background-color: #967969 !important;
   color: white !important;
   padding: 10px;
   border-radius: 5px;
@@ -49,4 +49,31 @@
 }
 .dateSelect {
   text-align: center;
+}
+
+.nav-link {
+  padding: 10px;
+  color: white;
+  size: 15px;
+}
+
+.header-container {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  background-color: #967969;
+  padding: 22px;
+  justify-content: space-between;
+}
+
+.user {
+  border-radius: 60px;
+  border: 1px solid black;
+
+  width: 30px;
+  height: 30px;
+}
+
+.nav-contents {
+  display: inline;
 }
