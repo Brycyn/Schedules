@@ -1,79 +1,81 @@
 import { NavLink, useLocation } from "react-router";
 import { TfiUser } from "react-icons/tfi";
 import Modal from "react-modal";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import AuthContext from "../context/AuthContext";
 
-export const UserModal = () => {
+export const UserModal = ({ isOpen, position, onClose }) => {
   const auth = useContext(AuthContext);
-  console.log(auth);
+
   return (
     <Modal
-      isOpen={true}
+      isOpen={isOpen}
+      onRequestClose={onClose}
       style={{
         content: {
-          width: "30%", // Adjust as needed
-          height: "25%", // Adjust as needed
-          margin: "auto", // Center the modal
-          borderRadius: "10px", // Optional: Rounded corners
-          alignContent: "center",
-          justifyContent: "center",
-          top: 0,
-          right: 0,
+          width: "200px", // Adjust width as needed
+          height: "100px", // Adjust height as needed
+          position: "absolute",
+          top: position.top + position.height + 5,
+          left: position.left,
+          borderRadius: "10px",
+          padding: "10px",
         },
         overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // Dim the background
-          zIndex: 10001, // Ensure overlay is above FullCalendar
+          backgroundColor: "none",
+          zIndex: 10001,
         },
       }}
     >
       <p>{`Hello, ${auth.username}`}</p>
-      <p> logout</p>
-      <TfiUser className="user" />
+      <p style={{ cursor: "pointer" }} onClick={onClose}>
+        Logout
+      </p>
     </Modal>
   );
 };
 
 export default function NavBar() {
-  const [openM, setOpen] = useState();
+  const [openM, setOpen] = useState(false);
+  const [position, setPosition] = useState({ top: 0, right: 0, height: 0 });
+  const userIconRef = useRef(null);
   const location = useLocation();
+
+  const handleOpen = () => {
+    if (userIconRef.current) {
+      const rect = userIconRef.current.getBoundingClientRect();
+      setPosition({ top: 30, right: 0, height: rect.height });
+    }
+    setOpen(true);
+  };
+
   return (
     <>
-      {openM && <UserModal />}
+      {openM && (
+        <UserModal
+          isOpen={openM}
+          position={position}
+          onClose={() => setOpen(false)}
+        />
+      )}
 
       <div className="header-container">
-        {console.log("loc", location.pathname)}
         <div className="nav-contents">
           {location.pathname !== "/" && (
-            <NavLink
-              to="/"
-              className="nav-link"
-              state={{
-                code: localStorage.getItem("code")
-                  ? localStorage.getItem("code")
-                  : "",
-              }}
-            >
+            <NavLink to="/" className="nav-link">
               Home
             </NavLink>
           )}
-
-          <NavLink
-            to="/calendar"
-            className="nav-link"
-            state={{
-              code: localStorage.getItem("code")
-                ? localStorage.getItem("code")
-                : "",
-            }}
-          >
+          <NavLink to="/calendar" className="nav-link">
             Schedule
           </NavLink>
           <NavLink className="nav-link" to="/">
             Contacts
           </NavLink>
         </div>
-        <TfiUser className="user" onClick={() => setOpen(true)} />
+
+        {/* User Icon */}
+        <TfiUser className="user" ref={userIconRef} onClick={handleOpen} />
       </div>
     </>
   );
