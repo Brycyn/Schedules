@@ -4,7 +4,7 @@ import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { Menu } from "./Calendar";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
+import { NavBar } from "../components/NavBar";
 /**
  *
  * @param {*} events

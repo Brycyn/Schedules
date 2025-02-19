@@ -3,6 +3,8 @@ import { TfiUser } from "react-icons/tfi";
 import Modal from "react-modal";
 import { useContext, useState, useRef } from "react";
 import AuthContext from "../context/AuthContext";
+import { FcGoogle } from "react-icons/fc";
+import { AuthenticateWithGoogle, fetchEvents } from "../components/GoogleAuth";
 
 export const UserModal = ({ isOpen, position, onClose }) => {
   const auth = useContext(AuthContext);
@@ -31,11 +33,20 @@ export const UserModal = ({ isOpen, position, onClose }) => {
       <p style={{ cursor: "pointer" }} onClick={onClose}>
         Logout
       </p>
+      <button
+        style={{ borderRadius: 50, overflow: "hidden" }}
+        onClick={() => {
+          AuthenticateWithGoogle();
+        }}
+      >
+        {" "}
+        <FcGoogle /> Login With Google
+      </button>
     </Modal>
   );
 };
 
-export default function NavBar() {
+export const NavBar = ({ events }) => {
   const [openM, setOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0, height: 0 });
   const userIconRef = useRef(null);
@@ -66,12 +77,19 @@ export default function NavBar() {
               Home
             </NavLink>
           )}
-          <NavLink to="/calendar" className="nav-link">
-            Schedule
-          </NavLink>
+          {!location.pathname.includes("calendar") && (
+            <NavLink to="/calendar" className="nav-link">
+              Schedule
+            </NavLink>
+          )}
           <NavLink className="nav-link" to="/">
             Contacts
           </NavLink>
+          {location.pathname.includes("calendar") && (
+            <NavLink to="/wage" className="nav-link" state={{ evnt: events }}>
+              Finance
+            </NavLink>
+          )}
         </div>
 
         {/* User Icon */}
@@ -79,4 +97,4 @@ export default function NavBar() {
       </div>
     </>
   );
-}
+};

@@ -12,6 +12,7 @@ import { TfiMenuAlt } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import EventModal from "../components/EventModal";
+import { Banner } from "./Home";
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 let logged_in = true;
@@ -114,7 +115,7 @@ export const Menu = ({ events }) => {
                 </li>
               </>
             )}
-            {!auth.isAuthenticated && (
+            {auth.isAuthenticated && (
               <li>
                 <button
                   style={{ borderRadius: 50, overflow: "hidden" }}
@@ -246,6 +247,7 @@ export default function CalendarEvents() {
   console.log("initial calendar events", calendarEvents);
   return (
     <>
+      <Banner events={calendarEvents} />
       <div className="App" style={{ alignItems: "center", width: "100%" }}>
         <header
           style={{
@@ -253,9 +255,7 @@ export default function CalendarEvents() {
             justifyContent: "space-between",
             flexDirection: "row",
           }}
-        >
-          <Menu events={calendarEvents} />
-        </header>
+        ></header>
 
         <div
           style={{
@@ -271,14 +271,6 @@ export default function CalendarEvents() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {auth.isAuthenticated ? (
-              <h2 style={{ textAlign: "center" }}>
-                Hello, {username.split("@")[0]}
-              </h2>
-            ) : (
-              " "
-            )}
-
             <FullCalendar
               plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"

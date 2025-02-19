@@ -3,7 +3,7 @@ import { Menu } from "./Calendar";
 import FourOhFour from "../images/FourOhFour.png";
 import AuthContext, { AuthProvider } from "../context/AuthContext";
 import { useLocation } from "react-router";
-import NavBar from "../components/NavBar";
+import { NavBar } from "../components/NavBar";
 
 export const Banner = () => {
   return <NavBar />;
