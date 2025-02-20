@@ -168,6 +168,7 @@ export default function CalendarEvents() {
 
   const auth = useContext(AuthContext);
   useEffect(() => {
+    auth.refreshAccessToken();
     const fetchGoogleEvents = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
