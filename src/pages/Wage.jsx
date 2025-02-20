@@ -35,7 +35,7 @@ export default function Wage() {
     // for Each event being calculated
     var weeklyhours = 0;
     var weeklyMin = 0;
-    const evnt = events.filter((ev) => ev.end >= today);
+    const evnt = events?.filter((ev) => ev.end >= today);
 
     evnt?.forEach((e) => {
       console.log("filtered_events", evnt);
@@ -92,14 +92,6 @@ export default function Wage() {
   return (
     <>
       <NavBar />
-      <button
-        onClick={async () => {
-          navigation(-1);
-          await auth.refreshAccessToken();
-        }}
-      >
-        back
-      </button>
 
       <div
         className="detail-container"
@@ -114,7 +106,7 @@ export default function Wage() {
           overflow: "scroll",
         }}
       >
-        {eventsParam.map((event, index) => {
+        {eventsParam?.map((event, index) => {
           if (event.end >= today)
             return (
               <div
