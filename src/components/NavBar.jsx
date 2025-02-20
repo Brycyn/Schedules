@@ -9,6 +9,7 @@ import { AuthenticateWithGoogle, fetchEvents } from "../components/GoogleAuth";
 export const UserModal = ({ isOpen, position, onClose }) => {
   const auth = useContext(AuthContext);
 
+  console.log("user", auth);
   return (
     <Modal
       isOpen={isOpen}
@@ -29,19 +30,30 @@ export const UserModal = ({ isOpen, position, onClose }) => {
         },
       }}
     >
-      <p>{`Hello, ${auth.username}`}</p>
-      <p style={{ cursor: "pointer" }} onClick={onClose}>
-        Logout
-      </p>
-      <button
-        style={{ borderRadius: 50, overflow: "hidden" }}
-        onClick={() => {
-          AuthenticateWithGoogle();
-        }}
-      >
-        {" "}
-        <FcGoogle /> Login With Google
-      </button>
+      {auth.isAuthenticated ? (
+        <>
+          <p>{`Hello, ${auth.username}`}</p>
+          <p
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              onClose();
+              auth.logout();
+            }}
+          >
+            Logout
+          </p>
+        </>
+      ) : (
+        <button
+          style={{ borderRadius: 50, overflow: "hidden" }}
+          onClick={() => {
+            AuthenticateWithGoogle();
+          }}
+        >
+          {" "}
+          <FcGoogle /> Login With Google
+        </button>
+      )}
     </Modal>
   );
 };

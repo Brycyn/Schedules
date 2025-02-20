@@ -185,7 +185,7 @@ export default function CalendarEvents() {
           setAccessToken(token);
           const tkn = localStorage.getItem("access_token");
 
-          const events = await fetchEvents(tkn);
+          const events = await auth.fetchEvents(tkn);
           setUsername(events.summary);
           console.log("my events", events.summary);
           const newCalendarEvents = events.items?.map((e) => {

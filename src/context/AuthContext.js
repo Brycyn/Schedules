@@ -103,9 +103,33 @@ export const AuthProvider = ({ children }) => {
     setAuthStatus(false);
   };
 
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      localStorage.setItem("user", response.data);
+      console.log("data", JSON.stringify(response));
+      setUser(response.data.summary)
+
+      console.log("Events fetched:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching calendar events:", error);
+    }
+  };
+
+
   return (
     <AuthContext.Provider
-      value={{ accessToken, isAuthenticated, username, exchangeCodeForToken, refreshAccessToken, logout }}
+      value={{ accessToken, isAuthenticated, username, fetchEvents, exchangeCodeForToken, refreshAccessToken, logout }}
     >
       {children}
     </AuthContext.Provider>
