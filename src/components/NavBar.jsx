@@ -94,7 +94,7 @@ export const NavBar = ({ events }) => {
               Schedule
             </NavLink>
           )}
-          <NavLink className="nav-link" to="/">
+          <NavLink className="nav-link" to="/chat">
             Contacts
           </NavLink>
           {location.pathname.includes("calendar") && (
