@@ -106,7 +106,7 @@ export const Menu = ({ events }) => {
                   </NavLink>
                 </li>
                 <li style={{ paddingBottom: "25px" }}>
-                  <NavLink to="/">Contacts</NavLink>
+                  <NavLink to="/chat">Contacts</NavLink>
                 </li>
                 <li style={{ paddingBottom: "25px" }}>
                   <NavLink to="/wage" state={{ evnt: events }}>
