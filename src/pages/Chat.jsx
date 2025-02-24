@@ -3,6 +3,9 @@ import { NavBar } from "../components/NavBar";
 import AuthContext from "../context/AuthContext";
 import ChatBody from "../components/ChatBody";
 import { useState } from "react";
+import { IoPaperPlaneOutline } from "react-icons/io5";
+
+import { TfiMenuAlt } from "react-icons/tfi";
 
 export default function Chat({ socket }) {
   const [messages, setMessages] = useState([]);
@@ -39,7 +42,7 @@ export default function Chat({ socket }) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button>SEND</button>
+        <IoPaperPlaneOutline style={{ margin: 10 }} />
       </form>
     );
   };
@@ -47,8 +50,10 @@ export default function Chat({ socket }) {
   return (
     <>
       <NavBar />
-      <ChatBody messages={messages} />
-      <ChatBar socket={socket} />
+      <div className="chat">
+        <ChatBody messages={messages} />
+        <ChatBar socket={socket} />
+      </div>
     </>
   );
 }

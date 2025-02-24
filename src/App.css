@@ -12,6 +12,59 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.sender-name {
+  text-align: right;
+}
+
+.message-sender {
+  background-color: #c7b0a4;
+  word-wrap: break-word;
+  max-width: 300px;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: auto;
+  font-size: 15px;
+}
+
+.message-recipient {
+  background-color: #967969;
+  max-width: 300px;
+  word-wrap: break-word;
+
+  padding: 10px;
+  border-radius: 10px;
+  margin-right: auto;
+  font-size: 15px;
+}
+.chat {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+}
+.chat-container {
+  height: 100vh;
+  width: 500px;
+  border-width: 5px;
+  border-color: #c7b0a4;
+  border-style: solid;
+  border-radius: 50px;
+  overflow: scroll;
+}
+.chatBar {
+  width: 375px;
+  bottom: 0;
+  border-radius: 60px;
+  border-width: none;
+  margin: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 .App-header {
   background-color: #282c34;
