@@ -13,15 +13,25 @@ const socketIO = require('socket.io')(http, {
     }
 });
 
+let users = [];
 //Add this before the app.get() block
 socketIO.on('connection', (socket) => {
-    console.log(`⚡: ${socket.id} user just connected!`);
+    console.log(`⚡: ${socket.id} user just connected! `);
 
     socket.on('message', (data) => {
         socketIO.emit('messageResponse', data);
     })
+
+    socket.on('newUser', (data) => {
+        users.push(data);
+        console.log('users', users)
+        socketIO.emit('newUserResponse', users)
+    })
     socket.on('disconnect', () => {
         console.log('🔥: A user disconnected');
+
+        users = users.filter((user) => user.socketID !== socket.id)
+        socketIO.emit('newUserResponse', users);
     });
 
 

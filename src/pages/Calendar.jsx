@@ -17,146 +17,7 @@ import { Banner } from "./Home";
 const clientId = process.env.REACT_APP_CLIENT_ID;
 let logged_in = true;
 
-export const Menu = ({ events }) => {
-  const location = useLocation();
-
-  const [menuStatus, setMenuStatus] = useState(false);
-  const navigation = useNavigate();
-
-  useEffect(() => {
-    logged_in = true;
-  });
-
-  function toggleMenu() {
-    console.log("Client IDs: ", clientId);
-    console.log("Client Secret: ", process.env.REACT_APP_CLIENT_SECRET);
-
-    return setMenuStatus(!menuStatus);
-  }
-
-  const auth = useContext(AuthContext);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  return (
-    <div>
-      <button
-        style={{ background: "none", border: "none" }}
-        onClick={toggleMenu}
-      >
-        <TfiMenuAlt className="menu" size={20} />
-      </button>
-      <div style={{ display: menuStatus !== true ? "none" : "flex" }}>
-        <button
-          style={{ background: "none", border: "none" }}
-          onClick={toggleMenu}
-        >
-          x
-        </button>
-        <div
-          className="menu-content"
-          style={{
-            display: "flex",
-            flexDirection: "column", // Stack items vertically
-            alignItems: "flex-start", // Align to the left
-            paddingLeft: "10px", // Add some spacing from the edge
-          }}
-        >
-          <ul
-            style={{
-              fontSize: "20px",
-              listStyle: "none",
-              position: "fixed", // Fixes the menu position
-              top: 0,
-              left: menuStatus ? "0" : "-200px", // Slide in/out logic
-              height: "100%",
-              width: "200px",
-              backgroundColor: "#f9f9f9",
-              borderRight: "2px solid black",
-              transition: "left 0.5s ease", // Smooth slide transition
-              boxShadow: "2px 0 5px rgba(0,0,0,0.1)", // Optional shadow for depth
-              zIndex: 1000, // Ensures it appears above other elements
-              textAlign: "left",
-              marginLeft: "5px 0",
-            }}
-          >
-            <li style={{ paddingBottom: "25px" }}>
-              <NavLink
-                to="/"
-                state={{
-                  code: localStorage.getItem("code")
-                    ? localStorage.getItem("code")
-                    : "",
-                }}
-              >
-                Home
-              </NavLink>
-            </li>
-            {auth.isAuthenticated && (
-              <>
-                <li style={{ paddingBottom: "25px" }}>
-                  <NavLink
-                    to="/calendar"
-                    state={{
-                      code: localStorage.getItem("code")
-                        ? localStorage.getItem("code")
-                        : "",
-                    }}
-                  >
-                    Schedule
-                  </NavLink>
-                </li>
-                <li style={{ paddingBottom: "25px" }}>
-                  <NavLink to="/chat">Contacts</NavLink>
-                </li>
-                <li style={{ paddingBottom: "25px" }}>
-                  <NavLink to="/wage" state={{ evnt: events }}>
-                    Wage Calulator
-                  </NavLink>
-                </li>
-              </>
-            )}
-            {auth.isAuthenticated && (
-              <li>
-                <button
-                  style={{ borderRadius: 50, overflow: "hidden" }}
-                  onClick={() => {
-                    AuthenticateWithGoogle();
-                  }}
-                >
-                  {" "}
-                  <FcGoogle /> Login With Google
-                </button>
-              </li>
-            )}
-            {location.pathname.includes("calendar") && auth.isAuthenticated ? (
-              <li>
-                <button
-                  style={{
-                    borderRadius: 50,
-                    overflow: "hidden",
-                    justifyContent: "center",
-                    marginTop: 10,
-                  }}
-                  onClick={() => {
-                    setModalOpen(!modalOpen);
-                    console.log("modal", modalOpen);
-                  }}
-                >
-                  Add Events
-                </button>
-              </li>
-            ) : (
-              ""
-            )}
-          </ul>
-        </div>
-        {modalOpen && <EventModal closeModal={() => setModalOpen(false)} />}
-      </div>
-    </div>
-  );
-};
-
-export default function CalendarEvents() {
+export default function CalendarEvents({ socket }) {
   const [userInfo, setUserInfo] = useState(null);
   const [events, setEvents] = useState([]);
   const [calendarEvents, setCalendarEvent] = useState([]);
@@ -186,8 +47,15 @@ export default function CalendarEvents() {
           setAccessToken(token);
           const tkn = localStorage.getItem("access_token");
 
-          const events = await auth.fetchEvents(tkn);
+          const events = await auth.fetchEvents(socket);
+
           setUsername(events.summary);
+
+          socket.emit("newUser", {
+            username: events.summary,
+            socketID: socket.id,
+          });
+
           console.log("my events", events.summary);
           const newCalendarEvents = events.items?.map((e) => {
             var startDate = new Date(e.start.dateTime);
@@ -209,9 +77,16 @@ export default function CalendarEvents() {
             const token = await auth.exchangeCodeForToken(navCode);
             setAccessToken(token);
             const tkn = localStorage.getItem("access_token");
+            console.log(username, socket.id);
 
-            const events = await fetchEvents(tkn);
+            const events = await auth.fetchEvents();
+
             setUsername(events.summary);
+            socket.emit("newUser", {
+              username: events.summary,
+              socketID: socket.id,
+            });
+
             console.log("my events", events.summary);
             const newCalendarEvents = events.items?.map((e) => {
               var startDate = new Date(e.start.dateTime);

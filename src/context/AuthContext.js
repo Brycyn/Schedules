@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, use } from "react";
+import { createContext, useState, useEffect, } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
   };
 
 
-  const fetchEvents = async () => {
+  const fetchEvents = async (socket) => {
     try {
       const response = await axios.get(
         "https://www.googleapis.com/calendar/v3/calendars/primary/events/",
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
       console.log("data", JSON.stringify(response));
       setUser(response.data.summary)
 
-      console.log("Events fetched:", response.data);
+      console.log("Events fetched:", response.data, 'socket', socket.id);
       return response.data;
     } catch (error) {
       console.error("Error fetching calendar events:", error);

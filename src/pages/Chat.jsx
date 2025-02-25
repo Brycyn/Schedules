@@ -4,6 +4,7 @@ import AuthContext from "../context/AuthContext";
 import ChatBody from "../components/ChatBody";
 import { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import { MdOnlinePrediction } from "react-icons/md";
 
 import { TfiMenuAlt } from "react-icons/tfi";
 
@@ -33,6 +34,7 @@ export default function Chat({ socket }) {
       }
       setMessage("");
     }
+
     return (
       <form className="form" onSubmit={handleMessageSubmit}>
         <input
@@ -47,9 +49,46 @@ export default function Chat({ socket }) {
     );
   };
 
+  const ChatUsers = ({ socket }) => {
+    const [newUsers, setNewUser] = useState([]);
+
+    useEffect(() => {
+      socket.on("newUserResponse", (data) => setNewUser(data));
+    }, [socket, newUsers]);
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          flexDirection: "column",
+          width: "300px",
+        }}
+      >
+        <h2 style={{ borderBottom: "black 1px solid" }}> Active Users</h2>
+        {newUsers.map((user) =>
+          auth.username !== user.username ? (
+            <div
+              style={{
+                flexDirection: "row",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <MdOnlinePrediction style={{ marginRight: 5 }} />
+              <h4 key={user.id}>{user.username}</h4>
+            </div>
+          ) : (
+            ""
+          )
+        )}
+      </div>
+    );
+  };
   return (
     <>
       <NavBar />
+      <ChatUsers socket={socket} />
       <div className="chat">
         <ChatBody messages={messages} />
         <ChatBar socket={socket} />
