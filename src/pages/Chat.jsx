@@ -58,25 +58,36 @@ export default function Chat({ socket }) {
 
     return (
       <div
+        className="contain"
         style={{
           display: "flex",
           justifyContent: "flex-start",
+          alignContent: "flex-start",
           flexDirection: "column",
           width: "300px",
+          borderRight: "black 1px solid",
+
+          alignItems: "center",
+          padding: "10px",
         }}
       >
         <h2 style={{ borderBottom: "black 1px solid" }}> Active Users</h2>
         {newUsers.map((user) =>
           auth.username !== user.username ? (
             <div
+              className="active-container"
               style={{
-                flexDirection: "row",
                 display: "flex",
                 alignItems: "center",
+                marginBottom: "10px",
+                fontWeight: "bold",
+                fontSize: "18px",
               }}
             >
               <MdOnlinePrediction style={{ marginRight: 5 }} />
-              <h4 key={user.id}>{user.username}</h4>
+              <h4 className="active-users" key={user.id}>
+                {user.username}
+              </h4>
             </div>
           ) : (
             ""
@@ -88,10 +99,29 @@ export default function Chat({ socket }) {
   return (
     <>
       <NavBar />
-      <ChatUsers socket={socket} />
-      <div className="chat">
-        <ChatBody messages={messages} />
-        <ChatBar socket={socket} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          height: "100vh", // Ensure full height
+        }}
+      >
+        <ChatUsers socket={socket} />
+
+        {/* Ensure .chat expands and aligns properly */}
+        <div
+          className="chat"
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "10px",
+          }}
+        >
+          <ChatBody messages={messages} />
+          <ChatBar socket={socket} />
+        </div>
       </div>
     </>
   );

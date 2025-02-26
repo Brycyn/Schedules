@@ -8,11 +8,13 @@ export default function ChatBody({ messages }) {
   console.log("mess", messages);
   return (
     <>
-      <header className="chat-mainHeader">
-        <p>Hangout with Colleagues</p>
-        <NavLink className="leaveChat-btn" to="/">
-          LEAVE CHAT
-        </NavLink>
+      <header className="chat-mainHeader" style={{}}>
+        <h3>Hangout with Colleagues</h3>
+        <div className="leaveChat-btn">
+          <NavLink className="leaveChat-btn" to="/">
+            Leave Chat
+          </NavLink>
+        </div>
       </header>
       <div className="chat-container">
         {messages?.map((message) =>

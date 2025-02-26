@@ -23,12 +23,15 @@ socketIO.on('connection', (socket) => {
     })
 
     socket.on('newUser', (data) => {
-        users.push(data);
+        const newUsers = users.some((user) => user.id === data.id && user.username === data.username)
+
+        if (!newUsers) { users.push(data) }
         console.log('users', users)
         socketIO.emit('newUserResponse', users)
     })
     socket.on('disconnect', () => {
         console.log('🔥: A user disconnected');
+        console.log('users', users)
 
         users = users.filter((user) => user.socketID !== socket.id)
         socketIO.emit('newUserResponse', users);
@@ -44,6 +47,6 @@ app.get('/api', (req, res) => {
 
 http.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
-    console.log(__dirname)
+
 
 });

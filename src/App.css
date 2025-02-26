@@ -39,14 +39,38 @@
 .chat {
   align-items: center;
   display: flex;
-  width: 100%;
+  width: 500px;
   height: 100vh;
+  align-content: center; /* Remove quotes */
   flex-direction: column;
+  justify-content: center; /* Ensures vertical centering */
+}
+
+.leaveChat-btn {
+  text-decoration: none;
+  background-color: red;
+  border-radius: 70px;
+  width: 150px;
+  color: white;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+}
+
+.chat-mainHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 .chat-container {
   height: 100vh;
   width: 500px;
   border-width: 5px;
+
   border-color: #c7b0a4;
   border-style: solid;
   border-radius: 50px;
@@ -116,6 +140,9 @@
   background-color: #967969;
   padding: 22px;
   justify-content: space-between;
+  top: 0;
+  position: sticky;
+  z-index: 1000;
 }
 
 .user {
