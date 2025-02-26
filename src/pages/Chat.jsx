@@ -5,11 +5,14 @@ import ChatBody from "../components/ChatBody";
 import { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { MdOnlinePrediction } from "react-icons/md";
+import { CgMenuGridR } from "react-icons/cg";
 
-import { TfiMenuAlt } from "react-icons/tfi";
+import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
 
 export default function Chat({ socket }) {
   const [messages, setMessages] = useState([]);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [newUsers, setNewUser] = useState([]);
 
   const auth = useContext(AuthContext);
 
@@ -50,8 +53,6 @@ export default function Chat({ socket }) {
   };
 
   const ChatUsers = ({ socket }) => {
-    const [newUsers, setNewUser] = useState([]);
-
     useEffect(() => {
       socket.on("newUserResponse", (data) => setNewUser(data));
     }, [socket, newUsers]);
@@ -106,8 +107,14 @@ export default function Chat({ socket }) {
           height: "100vh", // Ensure full height
         }}
       >
-        <ChatUsers socket={socket} />
-
+        {chatOpen ? (
+          <>
+            <BiMenuAltRight size={50} onClick={() => setChatOpen(!chatOpen)} />
+            <ChatUsers socket={socket} />
+          </>
+        ) : (
+          <BiMenuAltLeft size={50} onClick={() => setChatOpen(!chatOpen)} />
+        )}
         {/* Ensure .chat expands and aligns properly */}
         <div
           className="chat"
