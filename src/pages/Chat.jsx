@@ -54,8 +54,12 @@ export default function Chat({ socket }) {
 
   const ChatUsers = ({ socket }) => {
     useEffect(() => {
-      socket.on("newUserResponse", (data) => setNewUser(data));
-    }, [socket, newUsers]);
+      const handleNewUserResponse = (data) => setNewUser(data);
+
+      socket.on("newUserResponse", handleNewUserResponse);
+
+      return () => socket.off("newUserResponse", handleNewUserResponse);
+    }, [socket]);
 
     return (
       <div
@@ -76,6 +80,7 @@ export default function Chat({ socket }) {
         {newUsers.map((user) =>
           auth.username !== user.username ? (
             <div
+              key={user.id}
               className="active-container"
               style={{
                 display: "flex",
