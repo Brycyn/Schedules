@@ -26,6 +26,7 @@ socketIO.on('connection', (socket) => {
         const newUsers = users.some((user) => user.id === data.id && user.username === data.username)
 
         if (!newUsers) { users.push(data) }
+
         console.log('users', users)
         socketIO.emit('newUserResponse', users)
     })
