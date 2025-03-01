@@ -102,6 +102,9 @@ export const NavBar = ({ events }) => {
               Finance
             </NavLink>
           )}
+          <NavLink to="/info" className="nav-link" state={{ evnt: events }}>
+            About Me
+          </NavLink>
         </div>
 
         {/* User Icon */}
