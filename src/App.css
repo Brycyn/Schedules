@@ -131,13 +131,14 @@
   padding: 10px;
   color: white;
   size: 15px;
+  text-decoration: none;
 }
 
 .header-container {
   flex-direction: row;
   display: flex;
   align-items: center;
-  background-color: #967969;
+  background-color: black;
   padding: 22px;
   justify-content: space-between;
   top: 0;
@@ -147,12 +148,28 @@
 
 .user {
   border-radius: 60px;
-  border: 1px solid black;
-
+  border: 1px solid white;
+  color: white;
   width: 30px;
   height: 30px;
 }
 
 .nav-contents {
   display: inline;
+}
+
+.home-header {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: white;
+  margin: 200px;
+}
+
+.link-icon {
+  margin: 8px;
+}
+
+.word-sphere {
+  margin-right: 150px;
 }
