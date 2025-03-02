@@ -4,7 +4,9 @@ export default function AboutMe() {
   return (
     <>
       <NavBar />
-      <h1> Hello World</h1>
+      <div className="header-container">
+        <h1 style={{ color: "white" }}> Hello World</h1>
+      </div>
     </>
   );
 }
