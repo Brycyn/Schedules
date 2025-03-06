@@ -84,7 +84,13 @@ export default function Home() {
                   className="link-icon"
                   onClick={() => navigateToSite(`https://github.com/Brycyn`)}
                 />
-                <TfiEmail className="link-icon" onClick={copyToClip} />
+                <TfiEmail
+                  className="link-icon"
+                  onClick={() => {
+                    window.location.href =
+                      "mailto:brycyn8@gmail.com?subject=Hello Brycyn!";
+                  }}
+                />
               </h1>
             </div>
             <div className="word-sphere">
