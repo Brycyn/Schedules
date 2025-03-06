@@ -34,6 +34,10 @@ function navigateToSite(link) {
   return window.open(link, "_blank");
 }
 
+function copyToClip() {
+  navigator.clipboard.writeText("brycyn8@gmail.com");
+  alert("Email copied to clipboard!");
+}
 export default function Home() {
   const location = useLocation();
 
@@ -80,7 +84,7 @@ export default function Home() {
                   className="link-icon"
                   onClick={() => navigateToSite(`https://github.com/Brycyn`)}
                 />
-                <TfiEmail className="link-icon" />
+                <TfiEmail className="link-icon" onClick={copyToClip} />
               </h1>
             </div>
             <div className="word-sphere">
