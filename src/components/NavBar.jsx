@@ -59,10 +59,13 @@ export const UserModal = ({ isOpen, position, onClose }) => {
 };
 
 export const NavBar = ({ events }) => {
+  const auth = useContext(AuthContext);
   const [openM, setOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0, height: 0 });
   const userIconRef = useRef(null);
   const location = useLocation();
+
+  const [currentPage, setCurrentPage] = useState(location.pathname);
 
   const handleOpen = () => {
     if (userIconRef.current) {
@@ -71,6 +74,13 @@ export const NavBar = ({ events }) => {
     }
     setOpen(true);
   };
+
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/calendar", label: "Calendar" },
+    { to: "/chat", label: "Chat" },
+    { to: "/info", label: "About Me" },
+  ];
 
   return (
     <>
@@ -84,27 +94,23 @@ export const NavBar = ({ events }) => {
 
       <div className="header-container">
         <div className="nav-contents">
-          {location.pathname !== "/" && (
-            <NavLink to="/" className="nav-link">
-              Home
-            </NavLink>
-          )}
-          {!location.pathname.includes("calendar") && (
-            <NavLink to="/calendar" className="nav-link">
-              Schedule
-            </NavLink>
-          )}
-          <NavLink className="nav-link" to="/chat">
-            Contacts
-          </NavLink>
+          {navLinks
+            .filter((loc) => loc.to !== location.pathname)
+            .map((pages) => (
+              <NavLink
+                key={pages.to}
+                to={pages.to}
+                className="nav-link"
+                state={pages?.state}
+              >
+                {pages.label}
+              </NavLink>
+            ))}
           {location.pathname.includes("calendar") && (
             <NavLink to="/wage" className="nav-link" state={{ evnt: events }}>
-              Finance
+              Shifts
             </NavLink>
           )}
-          <NavLink to="/info" className="nav-link" state={{ evnt: events }}>
-            About Me
-          </NavLink>
         </div>
 
         {/* User Icon */}
