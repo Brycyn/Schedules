@@ -80,6 +80,7 @@ export const NavBar = ({ events }) => {
     { to: "/calendar", label: "Calendar" },
     { to: "/chat", label: "Chat" },
     { to: "/info", label: "About Me" },
+    { to: "/projects", label: "Projects" },
   ];
 
   return (

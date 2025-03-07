@@ -3,6 +3,8 @@ import CalendarEvents from "./pages/Calendar";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
 import AboutMe from './pages/Info'
+import Projects from "./pages/Projects";
+
 import { Routes, Route } from "react-router-dom";
 import socketIO from "socket.io-client";
 
@@ -15,6 +17,8 @@ const AppRoutes = () => (
     <Route path="/calendar" element={<CalendarEvents socket={socket} />} />
     <Route path="/chat" element={<Chat socket={socket} />} />
     <Route path="/Info" element={<AboutMe socket={socket} />} />
+    <Route path="/projects" element={<Projects socket={socket} />} />
+
 
 
   </Routes>
