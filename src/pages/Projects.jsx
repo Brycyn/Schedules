@@ -5,6 +5,10 @@ export default function Projects() {
     { to: "/calendar", label: "Calendar" },
     { to: "/chat", label: "Chat" },
   ];
+  const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
+
+  console.log("yy", openaiApiKey); // This will print the API key
+
   return (
     <div className="">
       <NavBar />
