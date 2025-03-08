@@ -101,6 +101,32 @@
   color: white;
 }
 
+.tile {
+  background: rgb(30, 29, 29);
+  padding: 20px;
+  width: 250px;
+  color: white;
+  height: 300px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(255, 255, 255);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.tile:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 15px rgba(53, 139, 209);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  padding: 10px;
+  place-items: center;
+}
 .App-link {
   color: #61dafb;
 }

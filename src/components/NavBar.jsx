@@ -77,9 +77,8 @@ export const NavBar = ({ events }) => {
 
   const navLinks = [
     { to: "/", label: "Home" },
-    { to: "/calendar", label: "Calendar" },
-    { to: "/chat", label: "Chat" },
     { to: "/info", label: "About Me" },
+    { to: "/projects", label: "Projects" },
   ];
 
   return (
