@@ -14,12 +14,12 @@ export default function Projects() {
     <div className="">
       <NavBar />
       <div
-        className="grid-container header-container"
+        className="grid-container"
         style={{ display: "grid", height: "100vh" }}
       >
         {navLinks.map((proj) => (
           <NavLink className="nav-link" to={proj.to}>
-            <h1 className="tile">{proj.label}</h1>
+            <h1 className={proj.label}>{proj.label}</h1>
           </NavLink>
         ))}
       </div>
