@@ -110,9 +110,7 @@
   text-align: center;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(255, 255, 255);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tile:hover {
@@ -160,6 +158,19 @@
   text-decoration: none;
 }
 
+.bot-bar {
+  position: fixed; /* Sticks it to the bottom */
+  bottom: 0; /* Aligns at the bottom */
+  left: 0;
+  width: 75%; /* Full width */
+  background: white; /* Set background color */
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
 .header-container {
   flex-direction: row;
   display: flex;
@@ -198,4 +209,8 @@
 
 .word-sphere {
   margin-right: 150px;
+}
+
+.chatbot-container {
+  background-color: black;
 }

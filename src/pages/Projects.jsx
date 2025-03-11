@@ -4,6 +4,7 @@ export default function Projects() {
   const navLinks = [
     { to: "/calendar", label: "Calendar" },
     { to: "/chat", label: "Chat" },
+    { to: "/bot", label: "ChatBot" },
   ];
   const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
 

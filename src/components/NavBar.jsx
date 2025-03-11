@@ -79,6 +79,7 @@ export const NavBar = ({ events }) => {
     { to: "/", label: "Home" },
     { to: "/info", label: "About Me" },
     { to: "/projects", label: "Projects" },
+    { to: "/bot", label: "ChatBot" },
   ];
 
   return (
