@@ -27,6 +27,7 @@
     "gapi-script": "^1.2.0",
     "googleapis": "^105.0.0",
     "jwt-decode": "^4.0.0",
+    "openai": "^4.86.2",
     "react": "^19.0.0",
     "react-big-calendar": "^1.17.1",
     "react-dom": "^19.0.0",
