@@ -47,7 +47,7 @@ export default function Chat({ socket }) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <IoPaperPlaneOutline style={{ margin: 10 }} />
+        <IoPaperPlaneOutline style={{ margin: 10, color: "white" }} />
       </form>
     );
   };
@@ -71,12 +71,15 @@ export default function Chat({ socket }) {
           flexDirection: "column",
           width: "300px",
           borderRight: "black 1px solid",
-
+          height: "100%",
           alignItems: "center",
           padding: "10px",
         }}
       >
-        <h2 style={{ borderBottom: "black 1px solid" }}> Active Users</h2>
+        <h2 style={{ borderBottom: "black 1px solid", color: "white" }}>
+          {" "}
+          Active Users
+        </h2>
         {newUsers.map((user) =>
           auth.username !== user.username ? (
             <div
@@ -84,6 +87,7 @@ export default function Chat({ socket }) {
               className="active-container"
               style={{
                 display: "flex",
+                height: "100%",
                 alignItems: "center",
                 marginBottom: "10px",
                 fontWeight: "bold",
@@ -109,16 +113,25 @@ export default function Chat({ socket }) {
         style={{
           display: "flex",
           flexDirection: "row",
+          backgroundColor: "black",
           height: "100vh", // Ensure full height
         }}
       >
         {chatOpen ? (
           <>
-            <BiMenuAltRight size={50} onClick={() => setChatOpen(!chatOpen)} />
+            <BiMenuAltRight
+              size={50}
+              color="white"
+              onClick={() => setChatOpen(!chatOpen)}
+            />
             <ChatUsers socket={socket} />
           </>
         ) : (
-          <BiMenuAltLeft size={50} onClick={() => setChatOpen(!chatOpen)} />
+          <BiMenuAltLeft
+            size={50}
+            color="white"
+            onClick={() => setChatOpen(!chatOpen)}
+          />
         )}
         {/* Ensure .chat expands and aligns properly */}
         <div
@@ -127,6 +140,7 @@ export default function Chat({ socket }) {
             flex: 1,
             display: "flex",
             flexDirection: "column",
+            backgroundColor: "black",
             justifyContent: "space-between",
             padding: "10px",
           }}
