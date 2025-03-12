@@ -5,7 +5,6 @@ import ChatBody from "../components/ChatBody";
 import { useState } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { MdOnlinePrediction } from "react-icons/md";
-import { CgMenuGridR } from "react-icons/cg";
 
 import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
 
