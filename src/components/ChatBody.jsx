@@ -9,7 +9,7 @@ export default function ChatBody({ messages }) {
   return (
     <>
       <header className="chat-mainHeader" style={{}}>
-        <h3>Hangout with Colleagues</h3>
+        <h3 style={{ color: "white" }}> Hangout with Colleagues</h3>
         <div className="leaveChat-btn">
           <NavLink className="leaveChat-btn" to="/">
             Leave Chat
